@@ -33,9 +33,41 @@ Future<void> main() async {
   /*categories.objectId = 'qGQ5C7Z4PO';
   categories.delete();*/
 
-  final response = await categories.save();
+  //Buscando um objeto especifico.
+  /*final response = await ParseObject('Categories').getObject('CMhy5SshHU');
+  if(response.success) {
+    print(response.result);
+  }*/
 
-  print(response.success);
+  //Buscando todos os objetos de uma classe.
+  /*final response = await ParseObject('Categories').getAll();
+
+  if(response.success) {
+    for (final object in response.result) {
+      print(response.result);
+    }
+  }*/
+
+  //Buscando objetos por query. Coluna igual.
+  /*final query = QueryBuilder(ParseObject('Categories'));
+  query.whereEqualTo('Position', 2);
+
+  final response = await query.query();
+
+  if(response.success) {
+    print(response.result);
+  }*/
+
+  //Buscando objetos por query. Coluna contém combinado com coluna igual.
+  final query = QueryBuilder(ParseObject('Categories'));
+  query.whereContains('Title', 'Blusas');
+  query.whereEqualTo('Position', 2);
+
+  final response = await query.query();
+
+  if(response.success) {
+    print(response.result);
+  }
 }
 
 class AppXLOMobx extends StatelessWidget {
