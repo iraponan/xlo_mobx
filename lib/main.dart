@@ -20,11 +20,20 @@ Future<void> main() async {
     debug: true,
   );
 
-  final category = ParseObject('Categories')
-    ..set('Title', 'Camisetas')
-    ..set('Position', 1);
+  //Adicionando um objeto.
+  final categories = ParseObject('Categories');
+  /*categories.set<String>('Title', 'Meias');
+  categories.set<int>('Position', 1);*/
 
-  final response = await category.save();
+  //Alterando um Objeto.
+  /*categories.objectId = 'qGQ5C7Z4PO';
+  categories.set('Position', 2);*/
+
+  //Removendo um objeto.
+  /*categories.objectId = 'qGQ5C7Z4PO';
+  categories.delete();*/
+
+  final response = await categories.save();
 
   print(response.success);
 }
