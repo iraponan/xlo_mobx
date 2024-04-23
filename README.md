@@ -1,6 +1,6 @@
 # xlo_mobx
 
-Projeto de estudo utilizando mobx e parse server.
+Projeto de estudo de OLX utilizando mobx e parse server.
 
 ## Getting Started
 
