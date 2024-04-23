@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:xlo_mobx/screens/signup/signup_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    /*final navigator = Navigator.of(context);
+    final navigator = Navigator.of(context);
     final signUpScreen = MaterialPageRoute(
-      builder: (context) => SignUpScreen(),
-    );*/
+      builder: (context) => const SignUpScreen(),
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -114,7 +115,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: () {
-                            //navigator.push(signUpScreen);
+                            navigator.push(signUpScreen);
                           },
                           child: const Text(
                             'Cadastre-se',
