@@ -1,6 +1,5 @@
 import 'package:mobx/mobx.dart';
 import 'package:xlo_mobx/helpers/extensions.dart';
-import 'package:xlo_mobx/models/enums/user_type.dart';
 import 'package:xlo_mobx/models/user.dart';
 import 'package:xlo_mobx/repositories/user.dart';
 
@@ -112,6 +111,9 @@ abstract class SignUpStoreBase with Store {
   @observable
   bool loading = false;
 
+  @observable
+  String error = '';
+
   @action
   Future<void> _signUp() async {
     loading = true;
@@ -123,7 +125,12 @@ abstract class SignUpStoreBase with Store {
       password: pass1!,
     );
 
-    await UserRepository().signUp(user);
+    try {
+      final resultUser = await UserRepository().signUp(user);
+      print(resultUser);
+    } catch (e) {
+      error = e.toString();
+    }
 
     loading = false;
   }

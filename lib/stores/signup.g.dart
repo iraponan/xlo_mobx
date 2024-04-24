@@ -154,6 +154,22 @@ mixin _$SignUpStore on SignUpStoreBase, Store {
     });
   }
 
+  late final _$errorAtom =
+      Atom(name: 'SignUpStoreBase.error', context: context);
+
+  @override
+  String get error {
+    _$errorAtom.reportRead();
+    return super.error;
+  }
+
+  @override
+  set error(String value) {
+    _$errorAtom.reportWrite(value, super.error, () {
+      super.error = value;
+    });
+  }
+
   late final _$_signUpAsyncAction =
       AsyncAction('SignUpStoreBase._signUp', context: context);
 
@@ -229,6 +245,7 @@ phone: ${phone},
 pass1: ${pass1},
 pass2: ${pass2},
 loading: ${loading},
+error: ${error},
 nameValid: ${nameValid},
 emailValid: ${emailValid},
 phoneValid: ${phoneValid},

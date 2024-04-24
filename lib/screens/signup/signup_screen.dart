@@ -1,6 +1,7 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:xlo_mobx/components/error_box.dart';
 import 'package:xlo_mobx/screens/signup/components/field_title.dart';
 import 'package:xlo_mobx/stores/signup.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -34,6 +35,16 @@ class SignUpScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    Observer(
+                      builder: (context) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          child: ErrorBox(
+                            message: signUpStore.error,
+                          ),
+                        );
+                      },
+                    ),
                     const FieldTitle(
                       title: 'Apelido',
                       subtitle: 'Como aparecerá em seus anúncios.',
