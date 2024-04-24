@@ -7,9 +7,6 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final navigator = Navigator.of(context);
-    final signUpScreen = MaterialPageRoute(
-      builder: (context) => const SignUpScreen(),
-    );
 
     return Scaffold(
       appBar: AppBar(
@@ -42,7 +39,8 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 3, bottom: 4, top: 8),
+                      padding:
+                          const EdgeInsets.only(left: 3, bottom: 4, top: 8),
                       child: Text(
                         'E-mail',
                         style: TextStyle(
@@ -103,7 +101,9 @@ class LoginScreen extends StatelessWidget {
                         child: const Text('Entrar'),
                       ),
                     ),
-                    const Divider(color: Colors.grey,),
+                    const Divider(
+                      color: Colors.grey,
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Wrap(
@@ -117,7 +117,11 @@ class LoginScreen extends StatelessWidget {
                           ),
                           GestureDetector(
                             onTap: () {
-                              navigator.push(signUpScreen);
+                              navigator.push(
+                                MaterialPageRoute(
+                                  builder: (context) => const SignUpScreen(),
+                                ),
+                              );
                             },
                             child: const Text(
                               'Cadastre-se',

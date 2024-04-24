@@ -10,10 +10,11 @@ abstract class SignUpStoreBase with Store {
   String? name;
 
   @action
-  void setName (String value) => name = value;
+  void setName(String value) => name = value;
 
   @computed
   bool get nameValid => name != null && name!.length > 6;
+
   String? get nameError {
     if (name == null || nameValid) {
       return null;
@@ -28,10 +29,11 @@ abstract class SignUpStoreBase with Store {
   String? email;
 
   @action
-  void setEmail (String value) => email = value;
+  void setEmail(String value) => email = value;
 
   @computed
   bool get emailValid => email != null && email!.isEmailValid();
+
   String? get emailError {
     if (email == null || emailValid) {
       return null;
@@ -46,10 +48,11 @@ abstract class SignUpStoreBase with Store {
   String? phone;
 
   @action
-  void setPhone (String value) => phone = value;
+  void setPhone(String value) => phone = value;
 
   @computed
   bool get phoneValid => phone != null && phone!.length >= 14;
+
   String? get phoneError {
     if (phone == null || phoneValid) {
       return null;
@@ -64,10 +67,11 @@ abstract class SignUpStoreBase with Store {
   String? pass1;
 
   @action
-  void setPass1 (String? value) => pass1 = value;
+  void setPass1(String? value) => pass1 = value;
 
   @computed
   bool get pass1Valid => pass1 != null && pass1!.length >= 6;
+
   String? get pass1Error {
     if (pass1 == null || pass1Valid) {
       return null;
@@ -82,15 +86,35 @@ abstract class SignUpStoreBase with Store {
   String? pass2;
 
   @action
-  void setPass2 (String? value) => pass2 = value;
+  void setPass2(String? value) => pass2 = value;
 
   @computed
   bool get pass2Valid => pass2 != null && pass2 == pass1;
+
   String? get pass2Error {
     if (pass2 == null || pass2Valid) {
       return null;
     } else {
       return 'Senhas não coincidem!';
     }
+  }
+
+  @computed
+  bool get isFormValid =>
+      nameValid && emailValid && phoneValid && pass1Valid && pass2Valid;
+
+  @computed
+  dynamic get signUpPressed => (isFormValid && !loading) ? _signUp : null;
+
+  @observable
+  bool loading = false;
+
+  @action
+  Future<void> _signUp() async {
+    loading = true;
+
+    await Future.delayed(const Duration(seconds: 3));
+
+    loading = false;
   }
 }

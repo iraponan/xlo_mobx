@@ -41,6 +41,7 @@ class SignUpScreen extends StatelessWidget {
                     Observer(
                       builder: (BuildContext context) {
                         return TextField(
+                          enabled: !signUpStore.loading,
                           decoration: InputDecoration(
                             border: const OutlineInputBorder(),
                             hintText: 'Exemplo: João Pedro',
@@ -62,6 +63,7 @@ class SignUpScreen extends StatelessWidget {
                     Observer(
                       builder: (context) {
                         return TextField(
+                          enabled: !signUpStore.loading,
                           decoration: InputDecoration(
                             border: const OutlineInputBorder(),
                             hintText: 'Exemplo: joao@seuemail.com',
@@ -84,6 +86,7 @@ class SignUpScreen extends StatelessWidget {
                     Observer(
                       builder: (context) {
                         return TextField(
+                          enabled: !signUpStore.loading,
                           decoration: InputDecoration(
                             border: const OutlineInputBorder(),
                             hintText: 'Exemplo: (99) 99999-9999)',
@@ -109,6 +112,7 @@ class SignUpScreen extends StatelessWidget {
                     Observer(
                       builder: (context) {
                         return TextField(
+                          enabled: !signUpStore.loading,
                           decoration: InputDecoration(
                               border: const OutlineInputBorder(),
                               isDense: true,
@@ -125,24 +129,32 @@ class SignUpScreen extends StatelessWidget {
                       title: 'Confirmar a senha',
                       subtitle: 'Repita a senha.',
                     ),
-                    Observer(builder: (context) {
-                      return TextField(
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          isDense: true,
-                          errorText: signUpStore.pass2Error
-                        ),
-                        obscureText: true,
-                        onChanged: signUpStore.setPass2,
-                      );
-                    },),
-                    Container(
-                      margin: const EdgeInsets.only(top: 20, bottom: 12),
-                      height: 40,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        child: const Text('Cadastrar'),
-                      ),
+                    Observer(
+                      builder: (context) {
+                        return TextField(
+                          enabled: !signUpStore.loading,
+                          decoration: InputDecoration(
+                              border: const OutlineInputBorder(),
+                              isDense: true,
+                              errorText: signUpStore.pass2Error),
+                          obscureText: true,
+                          onChanged: signUpStore.setPass2,
+                        );
+                      },
+                    ),
+                    Observer(
+                      builder: (context) {
+                        return Container(
+                          margin: const EdgeInsets.only(top: 20, bottom: 12),
+                          height: 40,
+                          child: ElevatedButton(
+                            onPressed: signUpStore.signUpPressed,
+                            child: signUpStore.loading
+                                ? const CircularProgressIndicator()
+                                : const Text('Cadastrar'),
+                          ),
+                        );
+                      },
                     ),
                     const Divider(
                       color: Colors.grey,

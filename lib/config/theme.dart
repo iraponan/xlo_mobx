@@ -17,7 +17,11 @@ mixin ThemeProject {
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.orange,
         foregroundColor: Colors.white,
+        disabledBackgroundColor: Colors.orange.withAlpha(120),
       ),
+    ),
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
+      color: Colors.white,
     ),
   );
 }
