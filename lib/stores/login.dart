@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:xlo_mobx/helpers/extensions.dart';
+import 'package:xlo_mobx/repositories/user.dart';
 
 part 'login.g.dart';
 
@@ -38,12 +39,21 @@ abstract class LoginStoreBase with Store {
   @observable
   bool loading = false;
 
+  @observable
+  String error = '';
+
   @action
   Future<void> _login() async {
     FocusManager.instance.primaryFocus?.unfocus();
-    loading = true;
 
-    await Future.delayed(const Duration(seconds: 3));
+    loading = true;
+    error = '';
+
+    try {
+      final user = await UserRepository().loginWithEmail(email!, password!);
+    } catch (e) {
+      error = e.toString();
+    }
 
     loading = false;
   }

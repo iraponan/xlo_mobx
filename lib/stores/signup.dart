@@ -120,6 +120,7 @@ abstract class SignUpStoreBase with Store {
     FocusManager.instance.primaryFocus?.unfocus();
 
     loading = true;
+    error = '';
 
     final user = User(
       name: name!,
