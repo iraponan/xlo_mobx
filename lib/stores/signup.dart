@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:xlo_mobx/helpers/extensions.dart';
 import 'package:xlo_mobx/models/user.dart';
@@ -116,6 +117,8 @@ abstract class SignUpStoreBase with Store {
 
   @action
   Future<void> _signUp() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+
     loading = true;
 
     final user = User(

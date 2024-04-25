@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:xlo_mobx/screens/signup/signup_screen.dart';
+import 'package:xlo_mobx/stores/login.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -7,6 +9,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final navigator = Navigator.of(context);
+    final LoginStore loginStore = LoginStore();
 
     return Scaffold(
       appBar: AppBar(
@@ -50,12 +53,18 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const TextField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        isDense: true,
-                      ),
-                      keyboardType: TextInputType.emailAddress,
+                    Observer(
+                      builder: (context) {
+                        return TextField(
+                          enabled: !loginStore.loading,
+                          decoration: InputDecoration(
+                              border: const OutlineInputBorder(),
+                              isDense: true,
+                              errorText: loginStore.emailError),
+                          keyboardType: TextInputType.emailAddress,
+                          onChanged: loginStore.setEmail,
+                        );
+                      },
                     ),
                     const SizedBox(
                       height: 16,
@@ -86,20 +95,32 @@ class LoginScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const TextField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        isDense: true,
-                      ),
-                      obscureText: true,
+                    Observer(
+                      builder: (context) {
+                        return TextField(
+                          enabled: !loginStore.loading,
+                          decoration: InputDecoration(
+                              border: const OutlineInputBorder(),
+                              isDense: true,
+                              errorText: loginStore.passwordError),
+                          obscureText: true,
+                          onChanged: loginStore.setPassword,
+                        );
+                      },
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 20, bottom: 12),
-                      height: 40,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        child: const Text('Entrar'),
-                      ),
+                    Observer(
+                      builder: (context) {
+                        return Container(
+                          margin: const EdgeInsets.only(top: 20, bottom: 12),
+                          height: 40,
+                          child: ElevatedButton(
+                            onPressed: loginStore.loginPressed,
+                            child: loginStore.loading
+                                ? const CircularProgressIndicator()
+                                : const Text('Entrar'),
+                          ),
+                        );
+                      },
                     ),
                     const Divider(
                       color: Colors.grey,
