@@ -24,10 +24,6 @@ class LoginScreen extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 16),
             child: Card(
               margin: const EdgeInsets.symmetric(horizontal: 32),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              elevation: 8,
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(

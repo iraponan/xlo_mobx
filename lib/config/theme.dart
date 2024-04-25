@@ -10,6 +10,7 @@ mixin ThemeProject {
       foregroundColor: Colors.white,
     ),
     scaffoldBackgroundColor: Colors.purple,
+    cardTheme: const CardTheme(elevation: 8),
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Colors.orange,
     ),

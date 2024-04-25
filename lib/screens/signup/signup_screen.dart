@@ -1,10 +1,10 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:xlo_mobx/components/error_box.dart';
 import 'package:xlo_mobx/screens/signup/components/field_title.dart';
 import 'package:xlo_mobx/stores/signup.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
@@ -25,10 +25,6 @@ class SignUpScreen extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 16),
             child: Card(
               margin: const EdgeInsets.symmetric(horizontal: 32),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              elevation: 8,
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
