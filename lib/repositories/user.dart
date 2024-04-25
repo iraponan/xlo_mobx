@@ -11,7 +11,7 @@ class UserRepository {
       user.password,
       user.email,
     );
-    
+
     parseUser.set<String>(keyUserName, user.name);
     parseUser.set<String>(keyUserPhone, user.phone);
     parseUser.set<int>(keyUserType, user.type.index);
@@ -36,7 +36,21 @@ class UserRepository {
     }
   }
 
-  User mapParseToUser (ParseUser parseUser) {
+  Future<User?> currentUser() async {
+    final parserUser = await ParseUser.currentUser();
+    if (parserUser != null) {
+      final response =
+          await ParseUser.getCurrentUserFromServer(parserUser.sessionToken);
+      if (response!.success) {
+        return mapParseToUser(response.result);
+      } else {
+        await parserUser.logout();
+      }
+    }
+    return null;
+  }
+
+  User mapParseToUser(ParseUser parseUser) {
     return User(
       id: parseUser.objectId,
       name: parseUser.get(keyUserName),
