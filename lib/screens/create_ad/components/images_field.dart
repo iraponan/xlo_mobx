@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:xlo_mobx/screens/create_ad/components/image_source_modal.dart';
 
 class ImagesField extends StatelessWidget {
   const ImagesField({super.key});
@@ -21,10 +22,12 @@ class ImagesField extends StatelessWidget {
               onTap: () {
                 if (Platform.isIOS) {
                   showCupertinoModalPopup(
-                      context: context, builder: (context) => Container());
+                      context: context,
+                      builder: (context) => const ImageSourceModel());
                 } else {
                   showModalBottomSheet(
-                      context: context, builder: (context) => Container());
+                      context: context,
+                      builder: (context) => const ImageSourceModel());
                 }
               },
               child: CircleAvatar(
