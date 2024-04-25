@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:xlo_mobx/helpers/extensions.dart';
 import 'package:xlo_mobx/models/user.dart';
 import 'package:xlo_mobx/repositories/user.dart';
+import 'package:xlo_mobx/stores/user_manager.dart';
 
 part 'signup.g.dart';
 
@@ -131,7 +133,7 @@ abstract class SignUpStoreBase with Store {
 
     try {
       final resultUser = await UserRepository().signUp(user);
-      print(resultUser);
+      GetIt.I<UserManagerStore>().setUser(resultUser);
     } catch (e) {
       error = e.toString();
     }
