@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ImageSourceModel extends StatelessWidget {
   const ImageSourceModel({super.key});
@@ -32,7 +33,7 @@ class ImageSourceModel extends StatelessWidget {
         ),
         actions: [
           CupertinoActionSheetAction(
-            onPressed: () {},
+            onPressed: getFromCamera,
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -42,7 +43,7 @@ class ImageSourceModel extends StatelessWidget {
             ),
           ),
           CupertinoActionSheetAction(
-            onPressed: () {},
+            onPressed: getFromGallery,
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -61,7 +62,7 @@ class ImageSourceModel extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextButton(
-              onPressed: () {},
+              onPressed: getFromCamera,
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -71,7 +72,7 @@ class ImageSourceModel extends StatelessWidget {
               ),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: getFromGallery,
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -84,5 +85,21 @@ class ImageSourceModel extends StatelessWidget {
         ),
       );
     }
+  }
+
+  Future<void> getFromCamera() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+    imageSelected(File(pickedFile?.path ?? ''));
+  }
+
+  Future<void> getFromGallery() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    imageSelected(File(pickedFile?.path ?? ''));
+  }
+
+  void imageSelected(File image) {
+    print(image.path);
   }
 }
