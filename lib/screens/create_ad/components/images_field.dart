@@ -9,6 +9,10 @@ class ImagesField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void onImageSelected(File image) {
+      Navigator.of(context).pop();
+    }
+
     return Container(
       color: Colors.grey[200],
       height: 120,
@@ -22,12 +26,18 @@ class ImagesField extends StatelessWidget {
               onTap: () {
                 if (Platform.isIOS) {
                   showCupertinoModalPopup(
-                      context: context,
-                      builder: (context) => const ImageSourceModel());
+                    context: context,
+                    builder: (context) => ImageSourceModel(
+                      onImageSelected: onImageSelected,
+                    ),
+                  );
                 } else {
                   showModalBottomSheet(
-                      context: context,
-                      builder: (context) => const ImageSourceModel());
+                    context: context,
+                    builder: (context) => ImageSourceModel(
+                      onImageSelected: onImageSelected,
+                    ),
+                  );
                 }
               },
               child: CircleAvatar(
