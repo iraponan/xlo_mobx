@@ -120,8 +120,9 @@ class ImageSourceModel extends StatelessWidget {
             doneButtonTitle: 'Concluir'),
       ],
     );
-    if (cropperFile == null) return;
-    final file = File(cropperFile.path);
-    onImageSelected(file);
+    if (cropperFile != null) {
+      final file = File(cropperFile.path);
+      onImageSelected(file);
+    }
   }
 }

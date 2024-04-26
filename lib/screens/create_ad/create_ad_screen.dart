@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:xlo_mobx/components/drawer/custom_drawer.dart';
 import 'package:xlo_mobx/screens/create_ad/components/images_field.dart';
+import 'package:xlo_mobx/stores/create_ad.dart';
 
 class CreateAdScreen extends StatelessWidget {
   const CreateAdScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final CreateAdStore createAdStore = CreateAdStore();
     const labelStyle = TextStyle(
       fontWeight: FontWeight.w800,
       color: Colors.grey,
@@ -30,7 +32,9 @@ class CreateAdScreen extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const ImagesField(),
+                ImagesField(
+                  createAdStore: createAdStore,
+                ),
                 TextFormField(
                   decoration: const InputDecoration(
                     labelText: 'Título *',
