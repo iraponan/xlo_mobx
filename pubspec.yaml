@@ -44,6 +44,7 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   image_picker: ^1.1.0
   image_cropper: ^4.0.1
+  dio: ^5.4.3+1
 
 dev_dependencies:
   flutter_test:
