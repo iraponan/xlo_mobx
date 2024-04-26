@@ -2,6 +2,7 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:xlo_mobx/components/drawer/custom_drawer.dart';
+import 'package:xlo_mobx/screens/create_ad/components/category_field.dart';
 import 'package:xlo_mobx/screens/create_ad/components/images_field.dart';
 import 'package:xlo_mobx/stores/create_ad.dart';
 
@@ -11,6 +12,7 @@ class CreateAdScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CreateAdStore createAdStore = CreateAdStore();
+
     const labelStyle = TextStyle(
       fontWeight: FontWeight.w800,
       color: Colors.grey,
@@ -41,6 +43,7 @@ class CreateAdScreen extends StatelessWidget {
                     labelStyle: labelStyle,
                     contentPadding: contentPaddingTextFormField,
                   ),
+                  textCapitalization: TextCapitalization.words,
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
@@ -49,6 +52,10 @@ class CreateAdScreen extends StatelessWidget {
                     contentPadding: contentPaddingTextFormField,
                   ),
                   maxLines: null,
+                  textCapitalization: TextCapitalization.sentences,
+                ),
+                CategoryField(
+                  createAdStore: createAdStore,
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
