@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:xlo_mobx/screens/create_ad/components/image_dialog.dart';
 import 'package:xlo_mobx/screens/create_ad/components/image_source_modal.dart';
 import 'package:xlo_mobx/stores/create_ad.dart';
 
@@ -32,8 +33,6 @@ class ImagesField extends StatelessWidget {
                 : maxImages,
             itemBuilder: (BuildContext context, int index) {
               if (index == createAdStore.images.length) {
-                print(
-                    'Index: $index\ncreateAdStore: ${createAdStore.images.length}');
                 return Padding(
                   padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
                   child: GestureDetector(
@@ -74,7 +73,15 @@ class ImagesField extends StatelessWidget {
                     16,
                   ),
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => ImageDialog(
+                            image: createAdStore.images[index],
+                            onDelete: () =>
+                                createAdStore.images.removeAt(index)),
+                      );
+                    },
                     child: CircleAvatar(
                       radius: 44,
                       backgroundImage: FileImage(createAdStore.images[index]),
