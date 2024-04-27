@@ -1,6 +1,10 @@
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
+import 'package:xlo_mobx/models/ad.dart';
 import 'package:xlo_mobx/models/address.dart';
 import 'package:xlo_mobx/models/category.dart';
+import 'package:xlo_mobx/repositories/ad.dart';
+import 'package:xlo_mobx/stores/user_manager.dart';
 import 'package:xlo_mobx/stores/zip_code.dart';
 
 part 'create_ad.g.dart';
@@ -100,5 +104,17 @@ abstract class CreateAdStoreBase with Store {
   @action
   void invalidSendPressed() => showErros = true;
 
-  void _send() {}
+  void _send() {
+    final ad = Ad(
+      images: images,
+      title: title,
+      description: description,
+      category: category,
+      address: address,
+      price: price,
+      hidePhone: hidePhone,
+      user: GetIt.I<UserManagerStore>().user,
+    );
+    AdRepository().save(ad);
+  }
 }
