@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:xlo_mobx/components/drawer/custom_drawer.dart';
 import 'package:xlo_mobx/screens/create_ad/components/category_field.dart';
+import 'package:xlo_mobx/screens/create_ad/components/hide_phone_field.dart';
 import 'package:xlo_mobx/screens/create_ad/components/images_field.dart';
 import 'package:xlo_mobx/screens/create_ad/components/zip_code_field.dart';
 import 'package:xlo_mobx/stores/create_ad.dart';
@@ -33,6 +34,7 @@ class CreateAdScreen extends StatelessWidget {
             clipBehavior: Clip.antiAlias,
             margin: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.min,
               children: [
                 ImagesField(
@@ -70,7 +72,28 @@ class CreateAdScreen extends StatelessWidget {
                     CentavosInputFormatter(moeda: true),
                   ],
                   keyboardType: TextInputType.number,
-                )
+                ),
+                HidePhoneField(
+                  createAdStore: createAdStore,
+                ),
+                SizedBox(
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: null,
+                    style: ElevatedButton.styleFrom(
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero,
+                      ),
+                    ),
+                    child: const Text(
+                      'Enviar',
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
