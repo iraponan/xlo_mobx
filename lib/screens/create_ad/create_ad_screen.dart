@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:xlo_mobx/components/drawer/custom_drawer.dart';
 import 'package:xlo_mobx/screens/create_ad/components/category_field.dart';
 import 'package:xlo_mobx/screens/create_ad/components/images_field.dart';
+import 'package:xlo_mobx/screens/create_ad/components/zip_code_field.dart';
 import 'package:xlo_mobx/stores/create_ad.dart';
 
 class CreateAdScreen extends StatelessWidget {
@@ -57,6 +58,7 @@ class CreateAdScreen extends StatelessWidget {
                 CategoryField(
                   createAdStore: createAdStore,
                 ),
+                const ZipCodeField(),
                 TextFormField(
                   decoration: const InputDecoration(
                     labelText: 'Preço *',

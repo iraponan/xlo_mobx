@@ -26,6 +26,7 @@ class ZipCodeRepository {
 
       return Address(
         cep: response.data!['cep'],
+        street: response.data!['logradouro'],
         district: response.data!['bairro'],
         city: City(
           name: response.data!['localidade'],
@@ -35,7 +36,7 @@ class ZipCodeRepository {
         ),
       );
     } catch (e) {
-      return Future.error('Falha ao buscar o CEP!');
+      return Future.error('CEP Inválido!');
     }
   }
 }
