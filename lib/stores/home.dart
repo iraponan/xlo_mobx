@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:xlo_mobx/models/category.dart';
+import 'package:xlo_mobx/stores/filter.dart';
 
 part 'home.g.dart';
 
@@ -17,4 +18,12 @@ abstract class HomeStoreBase with Store {
 
   @action
   void setCategory(Category value) => category = value;
+
+  @observable
+  FilterStore filterStore = FilterStore();
+
+  FilterStore get cloneFilter => filterStore.clone();
+
+  @action
+  void setFilter(FilterStore value) => filterStore = value;
 }

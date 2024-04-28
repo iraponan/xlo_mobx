@@ -41,6 +41,22 @@ mixin _$HomeStore on HomeStoreBase, Store {
     });
   }
 
+  late final _$filterStoreAtom =
+      Atom(name: 'HomeStoreBase.filterStore', context: context);
+
+  @override
+  FilterStore get filterStore {
+    _$filterStoreAtom.reportRead();
+    return super.filterStore;
+  }
+
+  @override
+  set filterStore(FilterStore value) {
+    _$filterStoreAtom.reportWrite(value, super.filterStore, () {
+      super.filterStore = value;
+    });
+  }
+
   late final _$HomeStoreBaseActionController =
       ActionController(name: 'HomeStoreBase', context: context);
 
@@ -67,10 +83,22 @@ mixin _$HomeStore on HomeStoreBase, Store {
   }
 
   @override
+  void setFilter(FilterStore value) {
+    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
+        name: 'HomeStoreBase.setFilter');
+    try {
+      return super.setFilter(value);
+    } finally {
+      _$HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 search: ${search},
-category: ${category}
+category: ${category},
+filterStore: ${filterStore}
     ''';
   }
 }

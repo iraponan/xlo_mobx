@@ -34,7 +34,7 @@ class PriceRangeField extends StatelessWidget {
                 ),
               ],
             ),
-            filterStore.priceError != null
+            filterStore.priceError.isNotEmpty
                 ? Padding(
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Text(
