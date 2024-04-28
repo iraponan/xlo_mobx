@@ -7,6 +7,7 @@ const String keyAdPrice = 'price';
 const String keyAdStatus = 'status';
 const String keyAdDistrict = 'district';
 const String keyAdCity = 'city';
+const String keyAdStreet = 'street';
 const String keyAdPostalCode = 'postalCode';
 const String keyAdFederativeUnit = 'federativeUnit';
 const String keyAdImages = 'images';

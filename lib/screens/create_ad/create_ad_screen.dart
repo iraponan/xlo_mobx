@@ -2,6 +2,8 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
+import 'package:mobx/mobx.dart';
 import 'package:xlo_mobx/components/drawer/custom_drawer.dart';
 import 'package:xlo_mobx/components/error_box.dart';
 import 'package:xlo_mobx/screens/create_ad/components/category_field.dart';
@@ -9,14 +11,28 @@ import 'package:xlo_mobx/screens/create_ad/components/hide_phone_field.dart';
 import 'package:xlo_mobx/screens/create_ad/components/images_field.dart';
 import 'package:xlo_mobx/screens/create_ad/components/postal_code_field.dart';
 import 'package:xlo_mobx/stores/create_ad.dart';
+import 'package:xlo_mobx/stores/page.dart';
 
-class CreateAdScreen extends StatelessWidget {
+class CreateAdScreen extends StatefulWidget {
   const CreateAdScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final CreateAdStore createAdStore = CreateAdStore();
+  State<CreateAdScreen> createState() => _CreateAdScreenState();
+}
 
+class _CreateAdScreenState extends State<CreateAdScreen> {
+  final CreateAdStore createAdStore = CreateAdStore();
+
+  @override
+  void initState() {
+    super.initState();
+    when((p0) => createAdStore.savedAd, () {
+      GetIt.I<PageStore>().setPage(0);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     const labelStyle = TextStyle(
       fontWeight: FontWeight.w800,
       color: Colors.grey,

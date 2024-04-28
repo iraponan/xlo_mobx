@@ -40,17 +40,18 @@ class AdRepository {
               ad.category?.id,
             ),
         )
+        ..set(keyAdStreet, ad.address?.street ?? '')
         ..set<String>(
           keyAdDistrict,
-          ad.address!.district,
+          ad.address?.district ?? '',
         )
         ..set<String>(
           keyAdCity,
-          ad.address!.city.name ?? '',
+          ad.address?.city.name ?? '',
         )
         ..set<String>(
           keyAdFederativeUnit,
-          ad.address!.federativeUnit.initials ?? '',
+          ad.address?.federativeUnit.initials ?? '',
         )
         ..set<String>(
           keyAdPostalCode,
@@ -62,11 +63,11 @@ class AdRepository {
         )
         ..set<bool>(
           keyAdHidePhone,
-          ad.hidePhone,
+          ad.hidePhone ?? false,
         )
         ..set<int>(
           keyAdHidePhone,
-          ad.status.index,
+          ad.status?.index ?? 0,
         )
         ..set<ParseUser>(
           keyAdOwner,
@@ -75,9 +76,7 @@ class AdRepository {
 
       final response = await adObject.save();
 
-      if (response.success) {
-        return response.result;
-      } else {
+      if (!response.success) {
         Future.error(ParseErrors.getDescription(response.error?.code ?? -1));
       }
     } catch (e) {
