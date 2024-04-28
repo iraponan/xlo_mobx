@@ -26,8 +26,7 @@ abstract class PostalCodeStoreBase with Store {
   void setPostalCode(String value) => postalCode = value;
 
   @computed
-  String get clearPostalCode =>
-      postalCode.replaceAll(RegExp('[^0-9]'), '') ?? '';
+  String get clearPostalCode => postalCode.replaceAll(RegExp('[^0-9]'), '');
 
   @observable
   Address? address;

@@ -22,9 +22,9 @@ class BarButton extends StatelessWidget {
           decoration: decoration,
           child: Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
-              fontSize: 18,
+              fontSize: label.length > 22 ? 14 : 18,
               fontWeight: FontWeight.w600,
             ),
           ),

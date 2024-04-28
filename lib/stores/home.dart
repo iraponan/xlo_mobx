@@ -1,4 +1,5 @@
 import 'package:mobx/mobx.dart';
+import 'package:xlo_mobx/models/category.dart';
 
 part 'home.g.dart';
 
@@ -10,4 +11,10 @@ abstract class HomeStoreBase with Store {
 
   @action
   void setSearch(String value) => search = value;
+
+  @observable
+  Category? category;
+
+  @action
+  void setCategory(Category value) => category = value;
 }
