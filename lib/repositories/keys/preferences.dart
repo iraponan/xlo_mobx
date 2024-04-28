@@ -1,1 +1,1 @@
-const keyUFList = 'UF_LIST';
+const keyFederativeUnitList = 'FEDERATIVE_UNIT_LIST';

@@ -7,7 +7,7 @@ part 'user_manager.g.dart';
 class UserManagerStore = UserManagerStoreBase with _$UserManagerStore;
 
 abstract class UserManagerStoreBase with Store {
-  UserManagerStoreBase(){
+  UserManagerStoreBase() {
     _getCurrentUser();
   }
 
@@ -15,13 +15,13 @@ abstract class UserManagerStoreBase with Store {
   User? user;
 
   @action
-  void setUser (User value) => user = value;
+  void setUser(User? value) => user = value;
 
   @computed
   bool get isLoggedIn => user != null;
 
   Future<void> _getCurrentUser() async {
     final user = await UserRepository().currentUser();
-    setUser(user!);
+    setUser(user);
   }
 }

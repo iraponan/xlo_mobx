@@ -4,8 +4,8 @@ import 'package:xlo_mobx/models/ad.dart';
 import 'package:xlo_mobx/models/address.dart';
 import 'package:xlo_mobx/models/category.dart';
 import 'package:xlo_mobx/repositories/ad.dart';
+import 'package:xlo_mobx/stores/postal_code.dart';
 import 'package:xlo_mobx/stores/user_manager.dart';
-import 'package:xlo_mobx/stores/zip_code.dart';
 
 part 'create_ad.g.dart';
 
@@ -13,7 +13,7 @@ class CreateAdStore = CreateAdStoreBase with _$CreateAdStore;
 
 abstract class CreateAdStoreBase with Store {
   ObservableList images = ObservableList();
-  ZipCodeStore zipCodeStore = ZipCodeStore();
+  PostalCodeStore postalCodeStore = PostalCodeStore();
 
   @computed
   bool get imagesValid => images.isNotEmpty;
@@ -59,7 +59,7 @@ abstract class CreateAdStoreBase with Store {
       categoryValid || !showErros ? '' : 'Campo Obrigatório.';
 
   @computed
-  Address? get address => zipCodeStore.address;
+  Address? get address => postalCodeStore.address;
   bool get addressValid => address != null;
   String get addressError =>
       addressValid || !showErros ? '' : 'Campo Obrigatório.';
@@ -104,7 +104,14 @@ abstract class CreateAdStoreBase with Store {
   @action
   void invalidSendPressed() => showErros = true;
 
-  void _send() {
+  @observable
+  bool loading = false;
+
+  @observable
+  String error = '';
+
+  @action
+  Future<void> _send() async {
     final ad = Ad(
       images: images,
       title: title,
@@ -115,6 +122,13 @@ abstract class CreateAdStoreBase with Store {
       hidePhone: hidePhone,
       user: GetIt.I<UserManagerStore>().user,
     );
-    AdRepository().save(ad);
+
+    loading = true;
+    try {
+      final response = await AdRepository().save(ad);
+    } catch (e) {
+      error = e.toString();
+    }
+    loading = false;
   }
 }

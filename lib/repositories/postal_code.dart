@@ -3,17 +3,17 @@ import 'package:xlo_mobx/models/address.dart';
 import 'package:xlo_mobx/models/city.dart';
 import 'package:xlo_mobx/repositories/ibge.dart';
 
-class ZipCodeRepository {
-  Future<Address> getAddressFromApi(String? zipCode) async {
-    if (zipCode == null || zipCode.isEmpty) {
+class PostalCodeRepository {
+  Future<Address> getAddressFromApi(String? postalCode) async {
+    if (postalCode == null || postalCode.isEmpty) {
       return Future.error('CEP Inválido!');
     }
-    final cleanZipCode = zipCode.replaceAll(RegExp('[^0-9]'), '');
-    if (cleanZipCode.length != 8) {
+    final cleanPostalCode = postalCode.replaceAll(RegExp('[^0-9]'), '');
+    if (cleanPostalCode.length != 8) {
       return Future.error('CEP Inválido!');
     }
 
-    final endpoint = 'https://viacep.com.br/ws/$cleanZipCode/json/';
+    final endpoint = 'https://viacep.com.br/ws/$cleanPostalCode/json/';
 
     try {
       final response = await Dio().get<Map>(endpoint);
@@ -22,17 +22,17 @@ class ZipCodeRepository {
         return Future.error('CEP Inválido!');
       }
 
-      final ufList = await IBGERepository().getUFList();
+      final federativeUnitList = await IBGERepository().getFederativeUnitList();
 
       return Address(
-        cep: response.data!['cep'],
+        postalCode: response.data!['cep'],
         street: response.data!['logradouro'],
         district: response.data!['bairro'],
         city: City(
           name: response.data!['localidade'],
         ),
-        uf: ufList.firstWhere(
-          (uf) => uf.initials == response.data!['uf'],
+        federativeUnit: federativeUnitList.firstWhere(
+          (federativeUnit) => federativeUnit.initials == response.data!['uf'],
         ),
       );
     } catch (e) {

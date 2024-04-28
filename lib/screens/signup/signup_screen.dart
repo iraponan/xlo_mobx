@@ -155,7 +155,14 @@ class SignUpScreen extends StatelessWidget {
                           margin: const EdgeInsets.only(top: 20, bottom: 12),
                           height: 40,
                           child: ElevatedButton(
-                            onPressed: signUpStore.signUpPressed,
+                            onPressed: () async {
+                              await signUpStore.signUpPressed();
+                              if (signUpStore.isFormValid &&
+                                  !signUpStore.loading) {
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pop();
+                              }
+                            },
                             child: signUpStore.loading
                                 ? const CircularProgressIndicator()
                                 : const Text('Cadastrar'),

@@ -13,7 +13,7 @@ class CategoryRepository {
     if (response.success) {
       return response.results!.map((p) => Category.fromParse(p)).toList();
     } else {
-      throw ParseErrors.getDescription(response.error!.code);
+      throw ParseErrors.getDescription(response.error?.code ?? -1);
     }
   }
 }

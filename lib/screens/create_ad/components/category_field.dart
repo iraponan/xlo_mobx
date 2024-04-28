@@ -46,7 +46,7 @@ class CategoryField extends StatelessWidget {
                 }
               },
             ),
-            createAdStore.categoryValid
+            createAdStore.categoryError.isEmpty
                 ? Container(
                     decoration: BoxDecoration(
                       border: Border(

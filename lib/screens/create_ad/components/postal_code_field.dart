@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:xlo_mobx/stores/create_ad.dart';
-import 'package:xlo_mobx/stores/zip_code.dart';
+import 'package:xlo_mobx/stores/postal_code.dart';
 
-class ZipCodeField extends StatelessWidget {
-  ZipCodeField({super.key, required this.createAdStore})
-      : zipCodeStore = createAdStore.zipCodeStore;
+class PostalCodeField extends StatelessWidget {
+  PostalCodeField({super.key, required this.createAdStore})
+      : postalCodeStore = createAdStore.postalCodeStore;
 
   final CreateAdStore createAdStore;
-  final ZipCodeStore zipCodeStore;
+  final PostalCodeStore postalCodeStore;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class ZipCodeField extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextFormField(
-              onChanged: zipCodeStore.setZipCode,
+              onChanged: postalCodeStore.setPostalCode,
               keyboardType: TextInputType.number,
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
@@ -39,20 +39,21 @@ class ZipCodeField extends StatelessWidget {
                     : createAdStore.addressError,
               ),
             ),
-            zipCodeStore.address == null &&
-                    zipCodeStore.error.isEmpty &&
-                    !zipCodeStore.loading
+            postalCodeStore.address == null &&
+                    postalCodeStore.error.isEmpty &&
+                    !postalCodeStore.loading
                 ? Container()
-                : zipCodeStore.address == null && zipCodeStore.error.isEmpty
+                : postalCodeStore.address == null &&
+                        postalCodeStore.error.isEmpty
                     ? const LinearProgressIndicator()
-                    : zipCodeStore.error.isNotEmpty
+                    : postalCodeStore.error.isNotEmpty
                         ? Container(
                             alignment: Alignment.center,
                             color: Colors.red.withAlpha(100),
                             height: 55,
                             padding: const EdgeInsets.all(8),
                             child: Text(
-                              zipCodeStore.error,
+                              postalCodeStore.error,
                               style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                                 color: Colors.red,
@@ -65,10 +66,10 @@ class ZipCodeField extends StatelessWidget {
                             height: 55,
                             padding: const EdgeInsets.all(8),
                             child: Text(
-                              'Localização: ${zipCodeStore.address?.street},'
-                              ' ${zipCodeStore.address?.district},'
-                              ' ${zipCodeStore.address?.city.name}'
-                              ' - ${zipCodeStore.address?.uf.initials}',
+                              'Localização: ${postalCodeStore.address?.street},'
+                              ' ${postalCodeStore.address?.district},'
+                              ' ${postalCodeStore.address?.city.name}'
+                              ' - ${postalCodeStore.address?.federativeUnit.initials}',
                               style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white,

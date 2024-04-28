@@ -21,7 +21,8 @@ class UserRepository {
     if (response.success) {
       return mapParseToUser(response.result);
     } else {
-      return Future.error(ParseErrors.getDescription(response.error!.code));
+      return Future.error(
+          ParseErrors.getDescription(response.error?.code ?? -1));
     }
   }
 
@@ -32,7 +33,8 @@ class UserRepository {
     if (response.success) {
       return mapParseToUser(response.result);
     } else {
-      return Future.error(ParseErrors.getDescription(response.error!.code));
+      return Future.error(
+          ParseErrors.getDescription(response.error?.code ?? -1));
     }
   }
 

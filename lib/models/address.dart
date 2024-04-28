@@ -1,22 +1,22 @@
 import 'package:xlo_mobx/models/city.dart';
-import 'package:xlo_mobx/models/uf.dart';
+import 'package:xlo_mobx/models/federative_unit.dart';
 
 class Address {
   Address(
-      {required this.uf,
+      {required this.federativeUnit,
       required this.city,
-      required this.cep,
+      required this.postalCode,
       required this.district,
       required this.street});
 
-  UF uf;
+  FederativeUnit federativeUnit;
   City city;
-  String cep;
+  String postalCode;
   String district;
   String street;
 
   @override
   String toString() {
-    return 'Address{uf: $uf, city: $city, cep: $cep, district: $district, street: $street}';
+    return 'Address{federativeUnit: $federativeUnit, city: $city, postalCode: $postalCode, district: $district, street: $street}';
   }
 }
