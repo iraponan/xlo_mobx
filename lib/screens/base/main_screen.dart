@@ -20,8 +20,8 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     reaction(
-          (_) => pageStore.page,
-          (page) => pageController.jumpToPage(page),
+      (_) => pageStore.page,
+      (page) => pageController.jumpToPage(page),
     );
   }
 
@@ -32,7 +32,7 @@ class _MainScreenState extends State<MainScreen> {
         controller: pageController,
         physics: const NeverScrollableScrollPhysics(),
         children: [
-          const HomeScreen(),
+          HomeScreen(),
           const CreateAdScreen(),
           Container(
             color: Colors.yellow,
