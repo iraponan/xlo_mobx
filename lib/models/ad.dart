@@ -1,8 +1,8 @@
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
+import 'package:xlo_mobx/enums/ad_status.dart';
 import 'package:xlo_mobx/models/address.dart';
 import 'package:xlo_mobx/models/category.dart';
 import 'package:xlo_mobx/models/city.dart';
-import 'package:xlo_mobx/models/enums/ad_status.dart';
 import 'package:xlo_mobx/models/federative_unit.dart';
 import 'package:xlo_mobx/models/user.dart';
 import 'package:xlo_mobx/repositories/keys/ad.dart';
