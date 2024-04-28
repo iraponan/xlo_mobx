@@ -16,7 +16,7 @@ class PriceRangeField extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SectionTitle(title: 'Preço'),
+            const SectionTitle(title: 'Preço:'),
             Row(
               children: [
                 PriceField(

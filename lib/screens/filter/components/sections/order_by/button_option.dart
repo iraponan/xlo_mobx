@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:xlo_mobx/enums/order_by.dart';
+import 'package:xlo_mobx/helpers/enums/order_by.dart';
 import 'package:xlo_mobx/stores/filter.dart';
 
 class ButtonOptionFilter extends StatelessWidget {

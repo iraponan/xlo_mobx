@@ -1,5 +1,5 @@
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
-import 'package:xlo_mobx/enums/user_type.dart';
+import 'package:xlo_mobx/helpers/enums/user_type.dart';
 import 'package:xlo_mobx/models/user.dart';
 import 'package:xlo_mobx/repositories/erros/parse_erros.dart';
 import 'package:xlo_mobx/repositories/keys/user.dart';

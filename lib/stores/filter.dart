@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
-import 'package:xlo_mobx/enums/order_by.dart';
+import 'package:xlo_mobx/helpers/consts/vendor.dart';
+import 'package:xlo_mobx/helpers/enums/order_by.dart';
 
 part 'filter.g.dart';
 
@@ -29,4 +30,16 @@ abstract class FilterStoreBase with Store {
       maxPrice != null && minPrice != null && maxPrice! < minPrice!
           ? 'Faixa de preço inválida!'
           : null;
+
+  @observable
+  int vendoType = vendorTypeParticular;
+
+  @action
+  void selectVendorType(int type) => vendoType = type;
+  void setVendorType(int type) => vendoType = vendoType | type;
+  void resetVendorType(int type) => vendoType = vendoType & ~type;
+
+  @computed
+  bool get isTypeParticular => vendoType & vendorTypeParticular != 0;
+  bool get isTypeProfessional => vendoType & vendorTypeProfessional != 0;
 }

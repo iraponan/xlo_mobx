@@ -1,4 +1,4 @@
-import 'package:xlo_mobx/enums/user_type.dart';
+import 'package:xlo_mobx/helpers/enums/user_type.dart';
 
 class User {
   User(

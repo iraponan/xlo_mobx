@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:xlo_mobx/enums/order_by.dart';
+import 'package:xlo_mobx/helpers/enums/order_by.dart';
 import 'package:xlo_mobx/screens/filter/components/section_title.dart';
 import 'package:xlo_mobx/screens/filter/components/sections/order_by/button_option.dart';
 import 'package:xlo_mobx/stores/filter.dart';
@@ -17,8 +17,9 @@ class OrderByField extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SectionTitle(title: 'Ordenar por'),
+            const SectionTitle(title: 'Ordenar por:'),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ButtonOptionFilter(
                   title: 'Data',
