@@ -11,4 +11,22 @@ abstract class FilterStoreBase with Store {
 
   @action
   void setOrderBy(OrderBy value) => orderBy = value;
+
+  @observable
+  num? minPrice;
+
+  @action
+  void setMinPrice(num? value) => minPrice = value;
+
+  @observable
+  num? maxPrice;
+
+  @action
+  void setMaxPrice(num? value) => maxPrice = value;
+
+  @computed
+  String? get priceError =>
+      maxPrice != null && minPrice != null && maxPrice! < minPrice!
+          ? 'Faixa de preço inválida!'
+          : null;
 }

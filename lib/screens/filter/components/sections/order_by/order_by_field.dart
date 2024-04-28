@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:xlo_mobx/enums/order_by.dart';
-import 'package:xlo_mobx/screens/filter/components/button_option.dart';
 import 'package:xlo_mobx/screens/filter/components/section_title.dart';
+import 'package:xlo_mobx/screens/filter/components/sections/order_by/button_option.dart';
 import 'package:xlo_mobx/stores/filter.dart';
 
 class OrderByField extends StatelessWidget {
