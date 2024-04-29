@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:path/path.dart' as path;
 import 'package:xlo_mobx/helpers/consts/vendor.dart';
@@ -142,7 +143,7 @@ class AdRepository {
         )
         ..set<int>(
           keyAdStatus,
-          ad.status?.index ?? 0,
+          ad.status?.index ?? 1,
         )
         ..set<ParseUser>(
           keyAdOwner,
@@ -170,7 +171,13 @@ class AdRepository {
               image,
               name: path.basename(image.path),
             );
+
             final response = await parseFile.save();
+            parseFile.set(
+              'url',
+              '${dotenv.env['URL_FILES']!}${parseFile.name}',
+            );
+
             if (response.success) {
               parseImages.add(parseFile);
             } else {

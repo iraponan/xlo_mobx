@@ -18,7 +18,7 @@ class Ad {
     this.address,
     this.price,
     this.hidePhone = false,
-    this.status = AdStatus.pending,
+    this.status = AdStatus.active,
     this.createdAt,
     this.user,
     this.views = 0,
@@ -41,7 +41,7 @@ class Ad {
     );
     price = object.get<num>(keyAdPrice);
     hidePhone = object.get<bool>(keyAdHidePhone);
-    status = AdStatus.values[object.get<int>(keyAdStatus) ?? 0];
+    status = AdStatus.values[object.get<int>(keyAdStatus) ?? 1];
     createdAt = object.createdAt;
     user = UserRepository().mapParseToUser(object.get<ParseUser>(keyAdOwner)!);
     views = object.get(keyAdViews, defaultValue: 0) ?? 0;

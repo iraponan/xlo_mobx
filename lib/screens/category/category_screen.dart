@@ -51,7 +51,7 @@ class CategoryScreen extends StatelessWidget {
                             ? Colors.purple.withAlpha(50)
                             : null,
                         child: Text(
-                          category.description ?? '',
+                          category.description,
                           style: TextStyle(
                               color: Colors.grey[700],
                               fontWeight: category.id == selected?.id
