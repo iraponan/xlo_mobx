@@ -38,7 +38,7 @@ class PriceRangeField extends StatelessWidget {
                 ? Padding(
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Text(
-                      filterStore.priceError!,
+                      filterStore.priceError,
                       style: const TextStyle(
                         color: Color(0xffb3261e),
                         fontSize: 12,

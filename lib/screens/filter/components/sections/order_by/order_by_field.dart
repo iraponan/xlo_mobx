@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:xlo_mobx/helpers/enums/order_by.dart';
 import 'package:xlo_mobx/screens/filter/components/section_title.dart';
 import 'package:xlo_mobx/screens/filter/components/sections/order_by/button_option.dart';
@@ -12,33 +11,29 @@ class OrderByField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Observer(
-      builder: (context) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SectionTitle(title: 'Ordenar por:'),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SectionTitle(title: 'Ordenar por:'),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ButtonOptionFilter(
-                  title: 'Data',
-                  option: OrderBy.date,
-                  filterStore: filterStore,
-                ),
-                const SizedBox(
-                  width: 12,
-                ),
-                ButtonOptionFilter(
-                  title: 'Preço',
-                  option: OrderBy.price,
-                  filterStore: filterStore,
-                ),
-              ],
+            ButtonOptionFilter(
+              title: 'Data',
+              option: OrderBy.date,
+              filterStore: filterStore,
+            ),
+            const SizedBox(
+              width: 12,
+            ),
+            ButtonOptionFilter(
+              title: 'Preço',
+              option: OrderBy.price,
+              filterStore: filterStore,
             ),
           ],
-        );
-      },
+        ),
+      ],
     );
   }
 }

@@ -16,7 +16,7 @@ class FilterScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Filtrar Busca'),
+        title: const Text('Filtro de Busca'),
         centerTitle: true,
       ),
       body: Observer(

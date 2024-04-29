@@ -43,7 +43,7 @@ class Ad {
     hidePhone = object.get<bool>(keyAdHidePhone);
     status = AdStatus.values[object.get<int>(keyAdStatus) ?? 0];
     createdAt = object.createdAt;
-    user = getUser(object) as User;
+    user = UserRepository().mapParseToUser(object.get<ParseUser>(keyAdOwner)!);
     views = object.get(keyAdViews, defaultValue: 0) ?? 0;
   }
 
@@ -63,5 +63,10 @@ class Ad {
   Future<User> getUser(ParseObject object) async {
     return UserRepository().mapParseToUser(object.get<ParseUser>(keyAdOwner) ??
         await ParseUser.currentUser() as ParseUser);
+  }
+
+  @override
+  String toString() {
+    return 'Ad{id: $id, images: $images, title: $title, description: $description, category: $category, address: $address, price: $price, hidePhone: $hidePhone, status: $status, createdAt: $createdAt, user: $user, views: $views}';
   }
 }

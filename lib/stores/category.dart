@@ -15,7 +15,7 @@ abstract class CategoryStoreBase with Store {
 
   @computed
   List<Category> get allCategoryList => List.from(categoryList)
-    ..insert(0, Category(id: '*', description: 'Todos'));
+    ..insert(0, Category(id: '*', description: 'Todas'));
 
   @action
   void setCategories(List<Category> categories) {

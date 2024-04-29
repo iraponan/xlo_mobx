@@ -13,13 +13,13 @@ mixin _$HomeStore on HomeStoreBase, Store {
       Atom(name: 'HomeStoreBase.search', context: context);
 
   @override
-  String get search {
+  String? get search {
     _$searchAtom.reportRead();
     return super.search;
   }
 
   @override
-  set search(String value) {
+  set search(String? value) {
     _$searchAtom.reportWrite(value, super.search, () {
       super.search = value;
     });
@@ -54,6 +54,37 @@ mixin _$HomeStore on HomeStoreBase, Store {
   set filterStore(FilterStore value) {
     _$filterStoreAtom.reportWrite(value, super.filterStore, () {
       super.filterStore = value;
+    });
+  }
+
+  late final _$errorAtom = Atom(name: 'HomeStoreBase.error', context: context);
+
+  @override
+  String get error {
+    _$errorAtom.reportRead();
+    return super.error;
+  }
+
+  @override
+  set error(String value) {
+    _$errorAtom.reportWrite(value, super.error, () {
+      super.error = value;
+    });
+  }
+
+  late final _$loadingAtom =
+      Atom(name: 'HomeStoreBase.loading', context: context);
+
+  @override
+  bool get loading {
+    _$loadingAtom.reportRead();
+    return super.loading;
+  }
+
+  @override
+  set loading(bool value) {
+    _$loadingAtom.reportWrite(value, super.loading, () {
+      super.loading = value;
     });
   }
 
@@ -94,11 +125,35 @@ mixin _$HomeStore on HomeStoreBase, Store {
   }
 
   @override
+  void setError(String value) {
+    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
+        name: 'HomeStoreBase.setError');
+    try {
+      return super.setError(value);
+    } finally {
+      _$HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setLoading(bool value) {
+    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
+        name: 'HomeStoreBase.setLoading');
+    try {
+      return super.setLoading(value);
+    } finally {
+      _$HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 search: ${search},
 category: ${category},
-filterStore: ${filterStore}
+filterStore: ${filterStore},
+error: ${error},
+loading: ${loading}
     ''';
   }
 }

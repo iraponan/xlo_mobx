@@ -2,12 +2,84 @@ import 'dart:io';
 
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:path/path.dart' as path;
+import 'package:xlo_mobx/helpers/consts/vendor.dart';
+import 'package:xlo_mobx/helpers/enums/ad_status.dart';
+import 'package:xlo_mobx/helpers/enums/order_by.dart';
+import 'package:xlo_mobx/helpers/enums/user_type.dart';
 import 'package:xlo_mobx/models/ad.dart';
+import 'package:xlo_mobx/models/category.dart';
 import 'package:xlo_mobx/repositories/erros/parse_erros.dart';
 import 'package:xlo_mobx/repositories/keys/ad.dart';
 import 'package:xlo_mobx/repositories/keys/category.dart';
+import 'package:xlo_mobx/repositories/keys/user.dart';
+import 'package:xlo_mobx/stores/filter.dart';
 
 class AdRepository {
+  Future<List<Ad>> getHomeAdList({
+    FilterStore? filter,
+    String? search,
+    Category? category,
+  }) async {
+    final queryBuilder = QueryBuilder<ParseObject>(ParseObject(keyAdTable))
+      ..includeObject([keyAdOwner, keyAdCategory])
+      ..setLimit(20)
+      ..whereEqualTo(keyAdStatus, AdStatus.active.index);
+
+    if (search != null && search.trim().isNotEmpty) {
+      queryBuilder.whereContains(keyAdTitle, search, caseSensitive: false);
+    }
+    if (category != null && category.id != '*') {
+      queryBuilder.whereEqualTo(
+          keyAdCategory,
+          (ParseObject(keyCategoryTable)..set(keyCategoryId, category.id))
+              .toPointer());
+    }
+    switch (filter?.orderBy) {
+      case OrderBy.price:
+        queryBuilder.orderByAscending(keyAdPrice);
+        break;
+      case OrderBy.date:
+      case null:
+      default:
+        queryBuilder.orderByDescending(keyAdCreatedAt);
+        break;
+    }
+
+    if (filter?.minPrice != null && filter!.minPrice! > 0) {
+      queryBuilder.whereGreaterThanOrEqualsTo(keyAdPrice, filter.minPrice);
+    }
+    if (filter?.maxPrice != null && filter!.maxPrice! > 0) {
+      queryBuilder.whereLessThanOrEqualTo(keyAdPrice, filter.maxPrice);
+    }
+
+    if (filter?.vendoType != null &&
+        filter!.vendoType > 0 &&
+        filter.vendoType < (vendorTypeProfessional | vendorTypeParticular)) {
+      final userQuery = QueryBuilder<ParseUser>(ParseUser.forQuery());
+
+      if (filter.vendoType == vendorTypeParticular) {
+        userQuery.whereEqualTo(keyUserType, UserType.particular.index);
+      }
+
+      if (filter.vendoType == vendorTypeProfessional) {
+        userQuery.whereEqualTo(keyUserType, UserType.professional.index);
+      }
+
+      queryBuilder.whereMatchesQuery(keyAdOwner, userQuery);
+    }
+
+    final response = await queryBuilder.query();
+
+    if (response.success && response.results != null) {
+      return response.results!.map((r) => Ad.fromParse(r)).toList();
+    } else if (response.success && response.results == null) {
+      return [];
+    } else {
+      return Future.error(
+          ParseErrors.getDescription(response.error?.code ?? -1));
+    }
+  }
+
   Future<void> save(Ad ad) async {
     try {
       final parseImages = await saveImages(ad.images);
@@ -40,7 +112,10 @@ class AdRepository {
               ad.category?.id,
             ),
         )
-        ..set(keyAdStreet, ad.address?.street ?? '')
+        ..set(
+          keyAdStreet,
+          ad.address?.street ?? '',
+        )
         ..set<String>(
           keyAdDistrict,
           ad.address?.district ?? '',
@@ -66,7 +141,7 @@ class AdRepository {
           ad.hidePhone ?? false,
         )
         ..set<int>(
-          keyAdHidePhone,
+          keyAdStatus,
           ad.status?.index ?? 0,
         )
         ..set<ParseUser>(

@@ -7,8 +7,8 @@ import 'package:xlo_mobx/stores/user_manager.dart';
 abstract class Setups {
   static void setupLocators() {
     GetIt.I.registerSingleton(PageStore());
-    GetIt.I.registerSingleton(HomeStore());
     GetIt.I.registerSingleton(UserManagerStore());
+    GetIt.I.registerSingleton(HomeStore());
     GetIt.I.registerSingleton(CategoryStore());
   }
 }
