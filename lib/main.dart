@@ -4,6 +4,7 @@ import 'package:xlo_mobx/config/initialize.dart';
 import 'package:xlo_mobx/config/setup.dart';
 
 Future<void> main() async {
+  await Initialize.initializeEnv();
   await Initialize.initializeParse();
   Setups.setupLocators();
   runApp(const AppXLOMobx());

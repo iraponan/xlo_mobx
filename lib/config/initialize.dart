@@ -7,7 +7,6 @@ abstract class Initialize {
   }
 
   static Future<void> initializeParse() async {
-    await initializeEnv();
     await Parse().initialize(
       dotenv.env['APP_NAME'] ?? '',
       dotenv.env['SERVER_URL'] ?? '',

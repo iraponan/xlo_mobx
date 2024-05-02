@@ -13,6 +13,7 @@ import 'package:xlo_mobx/repositories/erros/parse_erros.dart';
 import 'package:xlo_mobx/repositories/keys/ad.dart';
 import 'package:xlo_mobx/repositories/keys/category.dart';
 import 'package:xlo_mobx/repositories/keys/user.dart';
+import 'package:xlo_mobx/repositories/user.dart';
 import 'package:xlo_mobx/stores/filter.dart';
 
 class AdRepository {
@@ -20,10 +21,13 @@ class AdRepository {
     FilterStore? filter,
     String? search,
     Category? category,
+    int? page,
   }) async {
+    await UserRepository().currentUser();
     final queryBuilder = QueryBuilder<ParseObject>(ParseObject(keyAdTable))
       ..includeObject([keyAdOwner, keyAdCategory])
-      ..setLimit(20)
+      ..setAmountToSkip((page ?? 0) * 10)
+      ..setLimit(10)
       ..whereEqualTo(keyAdStatus, AdStatus.active.index);
 
     if (search != null && search.trim().isNotEmpty) {

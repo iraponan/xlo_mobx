@@ -50,7 +50,7 @@ class AdTile extends StatelessWidget {
                       ),
                     ),
                     Text(
-                        '${UtilData.obterDataDDMMAAAA(ad.createdAt ?? DateTime.now())}\n'
+                        '${UtilData.obterDataDDMMAAAA(ad.createdAt ?? DateTime.now())} ${UtilData.obterHoraHHMM(ad.createdAt ?? DateTime.now())}\n'
                         '${ad.address?.city.name}/${ad.address?.federativeUnit.initials}'),
                   ],
                 ),

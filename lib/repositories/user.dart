@@ -6,15 +6,10 @@ import 'package:xlo_mobx/repositories/keys/user.dart';
 
 class UserRepository {
   Future<User> signUp(User user) async {
-    final parseUser = ParseUser(
-      user.email,
-      user.password,
-      user.email,
-    );
-
-    parseUser.set<String>(keyUserName, user.name);
-    parseUser.set<String>(keyUserPhone, user.phone);
-    parseUser.set<int>(keyUserType, user.type.index);
+    final parseUser = ParseUser(user.email, user.password, user.email)
+      ..set<String>(keyUserName, user.name)
+      ..set<String>(keyUserPhone, user.phone)
+      ..set<int>(keyUserType, user.type.index);
 
     final response = await parseUser.signUp();
 
@@ -43,7 +38,7 @@ class UserRepository {
     if (parserUser != null) {
       final response =
           await ParseUser.getCurrentUserFromServer(parserUser.sessionToken);
-      if (response!.success) {
+      if (response != null && response.success) {
         return mapParseToUser(response.result);
       } else {
         await parserUser.logout();

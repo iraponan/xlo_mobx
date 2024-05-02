@@ -9,17 +9,31 @@ part of 'home.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$HomeStore on HomeStoreBase, Store {
+  Computed<int>? _$itemCountComputed;
+
+  @override
+  int get itemCount => (_$itemCountComputed ??=
+          Computed<int>(() => super.itemCount, name: 'HomeStoreBase.itemCount'))
+      .value;
+  Computed<bool>? _$showProgressComputed;
+
+  @override
+  bool get showProgress =>
+      (_$showProgressComputed ??= Computed<bool>(() => super.showProgress,
+              name: 'HomeStoreBase.showProgress'))
+          .value;
+
   late final _$searchAtom =
       Atom(name: 'HomeStoreBase.search', context: context);
 
   @override
-  String? get search {
+  String get search {
     _$searchAtom.reportRead();
     return super.search;
   }
 
   @override
-  set search(String? value) {
+  set search(String value) {
     _$searchAtom.reportWrite(value, super.search, () {
       super.search = value;
     });
@@ -88,6 +102,37 @@ mixin _$HomeStore on HomeStoreBase, Store {
     });
   }
 
+  late final _$pageAtom = Atom(name: 'HomeStoreBase.page', context: context);
+
+  @override
+  int get page {
+    _$pageAtom.reportRead();
+    return super.page;
+  }
+
+  @override
+  set page(int value) {
+    _$pageAtom.reportWrite(value, super.page, () {
+      super.page = value;
+    });
+  }
+
+  late final _$lastPageAtom =
+      Atom(name: 'HomeStoreBase.lastPage', context: context);
+
+  @override
+  bool get lastPage {
+    _$lastPageAtom.reportRead();
+    return super.lastPage;
+  }
+
+  @override
+  set lastPage(bool value) {
+    _$lastPageAtom.reportWrite(value, super.lastPage, () {
+      super.lastPage = value;
+    });
+  }
+
   late final _$HomeStoreBaseActionController =
       ActionController(name: 'HomeStoreBase', context: context);
 
@@ -147,13 +192,39 @@ mixin _$HomeStore on HomeStoreBase, Store {
   }
 
   @override
+  void loadNextPage() {
+    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
+        name: 'HomeStoreBase.loadNextPage');
+    try {
+      return super.loadNextPage();
+    } finally {
+      _$HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void addNewAds(List<Ad> newAds) {
+    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
+        name: 'HomeStoreBase.addNewAds');
+    try {
+      return super.addNewAds(newAds);
+    } finally {
+      _$HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 search: ${search},
 category: ${category},
 filterStore: ${filterStore},
 error: ${error},
-loading: ${loading}
+loading: ${loading},
+page: ${page},
+lastPage: ${lastPage},
+itemCount: ${itemCount},
+showProgress: ${showProgress}
     ''';
   }
 }

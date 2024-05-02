@@ -5,24 +5,27 @@ import 'package:xlo_mobx/components/drawer/custom_drawer.dart';
 import 'package:xlo_mobx/screens/home/components/ad_tile.dart';
 import 'package:xlo_mobx/screens/home/components/search_dialog.dart';
 import 'package:xlo_mobx/screens/home/components/top_bar.dart';
-import 'package:xlo_mobx/stores/filter.dart';
 import 'package:xlo_mobx/stores/home.dart';
 
-class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final HomeStore homeStore = GetIt.I<HomeStore>();
 
   @override
   Widget build(BuildContext context) {
-    FilterStore().save();
-    return SafeArea(
-      child: Observer(
-        builder: (context) {
-          return Scaffold(
+    return Observer(
+      builder: (context) {
+        return SafeArea(
+          child: Scaffold(
             drawer: const CustomDrawer(),
             appBar: AppBar(
-              title: homeStore.search?.isEmpty ?? true
+              title: homeStore.search.isEmpty
                   ? Container()
                   : GestureDetector(
                       onTap: () => openSearch(context),
@@ -31,7 +34,7 @@ class HomeScreen extends StatelessWidget {
                           return SizedBox(
                             width: constraints.biggest.width,
                             child: Center(
-                              child: Text(homeStore.search!),
+                              child: Text(homeStore.search),
                             ),
                           );
                         },
@@ -39,7 +42,7 @@ class HomeScreen extends StatelessWidget {
                     ),
               centerTitle: true,
               actions: [
-                homeStore.search?.isEmpty ?? true
+                homeStore.search.isEmpty
                     ? IconButton(
                         onPressed: () => openSearch(context),
                         icon: const Icon(Icons.search),
@@ -79,7 +82,7 @@ class HomeScreen extends StatelessWidget {
                             ],
                           ),
                         )
-                      : homeStore.loading
+                      : homeStore.showProgress
                           ? const Center(
                               child: CircularProgressIndicator(),
                             )
@@ -110,18 +113,26 @@ class HomeScreen extends StatelessWidget {
                                 )
                               : ListView.builder(
                                   itemBuilder: (context, index) {
-                                    return AdTile(
-                                      ad: homeStore.adList[index],
-                                    );
+                                    if (index < homeStore.adList.length) {
+                                      return AdTile(
+                                        ad: homeStore.adList[index],
+                                      );
+                                    } else {
+                                      homeStore.loadNextPage();
+                                      return const SizedBox(
+                                        height: 10,
+                                        child: LinearProgressIndicator(),
+                                      );
+                                    }
                                   },
-                                  itemCount: homeStore.adList.length,
+                                  itemCount: homeStore.itemCount,
                                 ),
                 ),
               ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -129,7 +140,7 @@ class HomeScreen extends StatelessWidget {
     final String search = await showDialog(
           context: context,
           builder: (context) => SearchDialog(
-            currentSearch: homeStore.search ?? '',
+            currentSearch: homeStore.search,
           ),
         ) ??
         '';

@@ -14,7 +14,7 @@ class ImagesField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int maxImages = 4;
+    int maxImages = 10;
 
     void onImageSelected(File image) {
       Navigator.of(context).pop();

@@ -22,7 +22,9 @@ mixin ThemeProject {
       ),
     ),
     progressIndicatorTheme: const ProgressIndicatorThemeData(
-      color: Colors.purple,
+      color: Colors.white,
+      circularTrackColor: Colors.orange,
+      linearTrackColor: Colors.orange,
     ),
   );
 }
