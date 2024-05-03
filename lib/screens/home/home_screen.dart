@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:xlo_mobx/components/drawer/custom_drawer.dart';
 import 'package:xlo_mobx/screens/home/components/ad_tile.dart';
+import 'package:xlo_mobx/screens/home/components/create_ad_button.dart';
 import 'package:xlo_mobx/screens/home/components/search_dialog.dart';
 import 'package:xlo_mobx/screens/home/components/top_bar.dart';
 import 'package:xlo_mobx/stores/home.dart';
@@ -16,6 +17,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final HomeStore homeStore = GetIt.I<HomeStore>();
+  final ScrollController scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -57,76 +59,90 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 const TopBar(),
                 Expanded(
-                  child: homeStore.error.isNotEmpty
-                      ? Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(
-                                Icons.error,
-                                color: Colors.white,
-                                size: 100,
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              Text(
-                                'Ocorreu um erro!\n${homeStore.error}',
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
+                  child: Stack(
+                    children: [
+                      homeStore.error.isNotEmpty
+                          ? Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.error,
                                     color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                            ],
-                          ),
-                        )
-                      : homeStore.showProgress
-                          ? const Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : homeStore.adList.isEmpty
-                              ? const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.border_clear,
-                                        color: Colors.white,
-                                        size: 100,
-                                      ),
-                                      SizedBox(
-                                        height: 8,
-                                      ),
-                                      Text(
-                                        'Hum... Nenhum anúncio encontrado!',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    ],
+                                    size: 100,
                                   ),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  Text(
+                                    'Ocorreu um erro!\n${homeStore.error}',
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : homeStore.showProgress
+                              ? const Center(
+                                  child: CircularProgressIndicator(),
                                 )
-                              : ListView.builder(
-                                  itemBuilder: (context, index) {
-                                    if (index < homeStore.adList.length) {
-                                      return AdTile(
-                                        ad: homeStore.adList[index],
-                                      );
-                                    } else {
-                                      homeStore.loadNextPage();
-                                      return const SizedBox(
-                                        height: 10,
-                                        child: LinearProgressIndicator(),
-                                      );
-                                    }
-                                  },
-                                  itemCount: homeStore.itemCount,
-                                ),
+                              : homeStore.adList.isEmpty
+                                  ? const Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.border_clear,
+                                            color: Colors.white,
+                                            size: 100,
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                          Text(
+                                            'Hum... Nenhum anúncio encontrado!',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : ListView.builder(
+                                      controller: scrollController,
+                                      itemBuilder: (context, index) {
+                                        if (index < homeStore.adList.length) {
+                                          return AdTile(
+                                            ad: homeStore.adList[index],
+                                          );
+                                        } else {
+                                          homeStore.loadNextPage();
+                                          return const SizedBox(
+                                            height: 10,
+                                            child: LinearProgressIndicator(),
+                                          );
+                                        }
+                                      },
+                                      itemCount: homeStore.itemCount,
+                                    ),
+                      Positioned(
+                        bottom: -50,
+                        left: 0,
+                        right: 0,
+                        child: CreateAdButton(
+                          scrollController: scrollController,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
