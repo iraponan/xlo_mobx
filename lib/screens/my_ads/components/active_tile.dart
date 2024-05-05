@@ -2,6 +2,7 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:xlo_mobx/helpers/ad_menu_choice.dart';
 import 'package:xlo_mobx/models/ad.dart';
 
 class ActiveTile extends StatelessWidget {
@@ -11,6 +12,24 @@ class ActiveTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<MenuChoice> choices = [
+      MenuChoice(
+        index: 0,
+        title: 'Editar',
+        iconData: Icons.edit,
+      ),
+      MenuChoice(
+        index: 1,
+        title: 'Já Vendi',
+        iconData: Icons.thumb_up,
+      ),
+      MenuChoice(
+        index: 2,
+        title: 'Excluir',
+        iconData: Icons.delete,
+      ),
+    ];
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Card(
@@ -60,6 +79,46 @@ class ActiveTile extends StatelessWidget {
                     ],
                   ),
                 ),
+              ),
+              PopupMenuButton<MenuChoice>(
+                onSelected: (choice) {
+                  switch (choice.index) {
+                    case 0:
+                      break;
+                    case 1:
+                      break;
+                    case 2:
+                      break;
+                    default:
+                      break;
+                  }
+                },
+                itemBuilder: (context) => choices
+                    .map(
+                      (choice) => PopupMenuItem<MenuChoice>(
+                        value: choice,
+                        child: Row(
+                          children: [
+                            Icon(
+                              choice.iconData,
+                              size: 20,
+                              color: Colors.purple,
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            Text(
+                              choice.title,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w400,
+                                color: Colors.purple,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                    .toList(),
               ),
             ],
           ),
