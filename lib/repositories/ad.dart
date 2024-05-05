@@ -9,6 +9,7 @@ import 'package:xlo_mobx/helpers/enums/order_by.dart';
 import 'package:xlo_mobx/helpers/enums/user_type.dart';
 import 'package:xlo_mobx/models/ad.dart';
 import 'package:xlo_mobx/models/category.dart';
+import 'package:xlo_mobx/models/user.dart';
 import 'package:xlo_mobx/repositories/erros/parse_erros.dart';
 import 'package:xlo_mobx/repositories/keys/ad.dart';
 import 'package:xlo_mobx/repositories/keys/category.dart';
@@ -202,6 +203,26 @@ class AdRepository {
       }
     } catch (e) {
       return Future.error('Falha ao salvar imagens.');
+    }
+  }
+
+  Future<List<Ad>> getMyAds({User? user}) async {
+    final currentUser = ParseUser('', '', '')..set(keyUserId, user?.id);
+    final queryBuilder = QueryBuilder<ParseObject>(ParseObject(keyAdTable))
+      ..setLimit(100)
+      ..orderByDescending(keyAdCreatedAt)
+      ..whereEqualTo(keyAdOwner, currentUser.toPointer())
+      ..includeObject([keyAdCategory, keyAdOwner]);
+
+    final response = await queryBuilder.query();
+
+    if (response.success && response.results != null) {
+      return response.results!.map((r) => Ad.fromParse(r)).toList();
+    } else if (response.success && response.results == null) {
+      return [];
+    } else {
+      return Future.error(
+          ParseErrors.getDescription(response.error?.code ?? -1));
     }
   }
 }

@@ -26,5 +26,10 @@ mixin ThemeProject {
       circularTrackColor: Colors.orange,
       linearTrackColor: Colors.orange,
     ),
+    tabBarTheme: const TabBarTheme(
+      indicatorColor: Colors.orange,
+      labelColor: Colors.white,
+      unselectedLabelColor: Colors.white54,
+    ),
   );
 }

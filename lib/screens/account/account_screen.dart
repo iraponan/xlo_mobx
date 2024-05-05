@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:xlo_mobx/components/drawer/custom_drawer.dart';
+import 'package:xlo_mobx/screens/my_ads/my_ads_screen.dart';
 import 'package:xlo_mobx/stores/user_manager.dart';
 
 class AccountScreen extends StatelessWidget {
@@ -72,7 +73,11 @@ class AccountScreen extends StatelessWidget {
                   Icons.keyboard_arrow_right,
                   color: Colors.purple,
                 ),
-                onTap: () {},
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const MyAdsScreen(),
+                  ),
+                ),
               ),
               ListTile(
                 title: const Text(
