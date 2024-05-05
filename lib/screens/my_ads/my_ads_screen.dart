@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:xlo_mobx/screens/my_ads/components/active_tile.dart';
+import 'package:xlo_mobx/screens/my_ads/components/pending_tile.dart';
+import 'package:xlo_mobx/screens/my_ads/components/sold_tile.dart';
 import 'package:xlo_mobx/stores/my_ads.dart';
 
 class MyAdsScreen extends StatefulWidget {
@@ -56,11 +58,25 @@ class _MyAdsScreenState extends State<MyAdsScreen>
                     ),
                   ),
           ),
-          Container(
-            color: Colors.grey,
+          Observer(
+            builder: (context) => myAdsStore.pendingAds.isEmpty
+                ? Container()
+                : ListView.builder(
+                    itemCount: myAdsStore.pendingAds.length,
+                    itemBuilder: (context, index) => PendingTile(
+                      ad: myAdsStore.pendingAds[index],
+                    ),
+                  ),
           ),
-          Container(
-            color: Colors.yellow,
+          Observer(
+            builder: (context) => myAdsStore.soldAds.isEmpty
+                ? Container()
+                : ListView.builder(
+                    itemCount: myAdsStore.soldAds.length,
+                    itemBuilder: (context, index) => SoldTile(
+                      ad: myAdsStore.soldAds[index],
+                    ),
+                  ),
           ),
         ],
       ),

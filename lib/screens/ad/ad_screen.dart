@@ -1,6 +1,7 @@
 import 'package:another_carousel_pro/another_carousel_pro.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:xlo_mobx/helpers/enums/ad_status.dart';
 import 'package:xlo_mobx/models/ad.dart';
 import 'package:xlo_mobx/screens/ad/components/bottom_bar.dart';
 import 'package:xlo_mobx/screens/ad/components/description_panel.dart';
@@ -49,7 +50,7 @@ class AdScreen extends StatelessWidget {
                     LocationPanel(ad: ad),
                     Divider(color: Colors.grey[500]),
                     UserPanel(ad: ad),
-                    const SizedBox(height: 96),
+                    SizedBox(height: ad.status == AdStatus.pending ? 16 : 96),
                   ],
                 ),
               ),
