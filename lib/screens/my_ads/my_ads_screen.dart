@@ -48,40 +48,41 @@ class _MyAdsScreenState extends State<MyAdsScreen>
           ],
         ),
       ),
-      body: TabBarView(
-        controller: tabController,
-        children: [
-          Observer(
-            builder: (context) => myAdsStore.activeAds.isEmpty
-                ? Container()
-                : ListView.builder(
-                    itemCount: myAdsStore.activeAds.length,
-                    itemBuilder: (context, index) => ActiveTile(
-                      ad: myAdsStore.activeAds[index],
-                    ),
-                  ),
-          ),
-          Observer(
-            builder: (context) => myAdsStore.pendingAds.isEmpty
-                ? Container()
-                : ListView.builder(
-                    itemCount: myAdsStore.pendingAds.length,
-                    itemBuilder: (context, index) => PendingTile(
-                      ad: myAdsStore.pendingAds[index],
-                    ),
-                  ),
-          ),
-          Observer(
-            builder: (context) => myAdsStore.soldAds.isEmpty
-                ? Container()
-                : ListView.builder(
-                    itemCount: myAdsStore.soldAds.length,
-                    itemBuilder: (context, index) => SoldTile(
-                      ad: myAdsStore.soldAds[index],
-                    ),
-                  ),
-          ),
-        ],
+      body: Observer(
+        builder: (context) => myAdsStore.loading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : TabBarView(
+                controller: tabController,
+                children: [
+                  myAdsStore.activeAds.isEmpty
+                      ? Container()
+                      : ListView.builder(
+                          itemCount: myAdsStore.activeAds.length,
+                          itemBuilder: (context, index) => ActiveTile(
+                            ad: myAdsStore.activeAds[index],
+                            myAdsStore: myAdsStore,
+                          ),
+                        ),
+                  myAdsStore.pendingAds.isEmpty
+                      ? Container()
+                      : ListView.builder(
+                          itemCount: myAdsStore.pendingAds.length,
+                          itemBuilder: (context, index) => PendingTile(
+                            ad: myAdsStore.pendingAds[index],
+                          ),
+                        ),
+                  myAdsStore.soldAds.isEmpty
+                      ? Container()
+                      : ListView.builder(
+                          itemCount: myAdsStore.soldAds.length,
+                          itemBuilder: (context, index) => SoldTile(
+                            ad: myAdsStore.soldAds[index],
+                          ),
+                        ),
+                ],
+              ),
       ),
     );
   }

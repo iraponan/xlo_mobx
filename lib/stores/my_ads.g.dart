@@ -33,10 +33,27 @@ mixin _$MyAdsStore on MyAdsStoreBase, Store {
     });
   }
 
+  late final _$loadingAtom =
+      Atom(name: 'MyAdsStoreBase.loading', context: context);
+
+  @override
+  bool get loading {
+    _$loadingAtom.reportRead();
+    return super.loading;
+  }
+
+  @override
+  set loading(bool value) {
+    _$loadingAtom.reportWrite(value, super.loading, () {
+      super.loading = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
 allads: ${allads},
+loading: ${loading},
 activeAds: ${activeAds}
     ''';
   }

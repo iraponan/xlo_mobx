@@ -6,11 +6,13 @@ import 'package:xlo_mobx/helpers/ad_menu_choice.dart';
 import 'package:xlo_mobx/models/ad.dart';
 import 'package:xlo_mobx/screens/ad/ad_screen.dart';
 import 'package:xlo_mobx/screens/create_ad/create_ad_screen.dart';
+import 'package:xlo_mobx/stores/my_ads.dart';
 
 class ActiveTile extends StatelessWidget {
-  const ActiveTile({super.key, required this.ad});
+  const ActiveTile({super.key, required this.ad, required this.myAdsStore});
 
   final Ad ad;
+  final MyAdsStore myAdsStore;
 
   @override
   Widget build(BuildContext context) {
@@ -141,11 +143,14 @@ class ActiveTile extends StatelessWidget {
     );
   }
 
-  void editAd(BuildContext context) {
-    Navigator.of(context).push(
+  Future<void> editAd(BuildContext context) async {
+    final success = await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (c) => CreateAdScreen(ad: ad),
       ),
     );
+    if (success != null && success) {
+      myAdsStore.refresh();
+    }
   }
 }
