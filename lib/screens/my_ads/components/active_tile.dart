@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:xlo_mobx/helpers/ad_menu_choice.dart';
 import 'package:xlo_mobx/models/ad.dart';
 import 'package:xlo_mobx/screens/ad/ad_screen.dart';
+import 'package:xlo_mobx/screens/create_ad/create_ad_screen.dart';
 
 class ActiveTile extends StatelessWidget {
   const ActiveTile({super.key, required this.ad});
@@ -91,6 +92,7 @@ class ActiveTile extends StatelessWidget {
                   onSelected: (choice) {
                     switch (choice.index) {
                       case 0:
+                        editAd(context);
                         break;
                       case 1:
                         break;
@@ -135,6 +137,14 @@ class ActiveTile extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  void editAd(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (c) => CreateAdScreen(ad: ad),
       ),
     );
   }

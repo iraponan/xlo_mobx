@@ -6,29 +6,48 @@ import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:xlo_mobx/components/drawer/custom_drawer.dart';
 import 'package:xlo_mobx/components/error_box.dart';
+import 'package:xlo_mobx/models/ad.dart';
 import 'package:xlo_mobx/screens/create_ad/components/category_field.dart';
 import 'package:xlo_mobx/screens/create_ad/components/hide_phone_field.dart';
 import 'package:xlo_mobx/screens/create_ad/components/images_field.dart';
 import 'package:xlo_mobx/screens/create_ad/components/postal_code_field.dart';
+import 'package:xlo_mobx/screens/my_ads/my_ads_screen.dart';
 import 'package:xlo_mobx/stores/create_ad.dart';
 import 'package:xlo_mobx/stores/page.dart';
 
 class CreateAdScreen extends StatefulWidget {
-  const CreateAdScreen({super.key});
+  const CreateAdScreen({super.key, this.ad});
+
+  final Ad? ad;
 
   @override
   State<CreateAdScreen> createState() => _CreateAdScreenState();
 }
 
 class _CreateAdScreenState extends State<CreateAdScreen> {
-  final CreateAdStore createAdStore = CreateAdStore();
+  late CreateAdStore createAdStore;
+  late bool editing;
 
   @override
   void initState() {
     super.initState();
-    when((p0) => createAdStore.savedAd, () {
-      GetIt.I<PageStore>().setPage(0);
-    });
+    editing = widget.ad != null;
+    createAdStore = CreateAdStore(ad: widget.ad ?? Ad());
+    when(
+      (p0) => createAdStore.savedAd,
+      () {
+        if (editing) {
+          Navigator.of(context).pop(true);
+        } else {
+          GetIt.I<PageStore>().setPage(0);
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const MyAdsScreen(initialPage: 1),
+            ),
+          );
+        }
+      },
+    );
   }
 
   @override
@@ -41,9 +60,11 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
     const contentPaddingTextFormField = EdgeInsets.fromLTRB(16, 10, 12, 10);
 
     return Scaffold(
-      drawer: const CustomDrawer(),
+      drawer: editing ? null : const CustomDrawer(),
       appBar: AppBar(
-        title: const Text('Criar Anúncio'),
+        title: editing
+            ? const Text('Editar Anúncio')
+            : const Text('Criar Anúncio'),
         centerTitle: true,
       ),
       body: Observer(
@@ -80,6 +101,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
                             createAdStore: createAdStore,
                           ),
                           TextFormField(
+                            initialValue: createAdStore.title,
                             decoration: InputDecoration(
                               labelText: 'Título *',
                               labelStyle: labelStyle,
@@ -92,6 +114,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
                             onChanged: createAdStore.setTitle,
                           ),
                           TextFormField(
+                            initialValue: createAdStore.description,
                             decoration: InputDecoration(
                               labelText: 'Descrição *',
                               labelStyle: labelStyle,
@@ -111,6 +134,7 @@ class _CreateAdScreenState extends State<CreateAdScreen> {
                             createAdStore: createAdStore,
                           ),
                           TextFormField(
+                            initialValue: createAdStore.priceText,
                             decoration: InputDecoration(
                               labelText: 'Preço *',
                               labelStyle: labelStyle,

@@ -51,10 +51,10 @@ class AdRepository {
         break;
     }
 
-    if (filter?.minPrice != null && filter!.minPrice! > 0) {
+    if (filter?.minPrice != null && (filter!.minPrice ?? 0) > 0) {
       queryBuilder.whereGreaterThanOrEqualsTo(keyAdPrice, filter.minPrice);
     }
-    if (filter?.maxPrice != null && filter!.maxPrice! > 0) {
+    if (filter?.maxPrice != null && (filter!.maxPrice ?? 0) > 0) {
       queryBuilder.whereLessThanOrEqualTo(keyAdPrice, filter.maxPrice);
     }
 
@@ -155,13 +155,17 @@ class AdRepository {
           parseUser,
         );
 
+      if (ad.id != null) {
+        adObject.objectId = ad.id;
+      }
+
       final response = await adObject.save();
 
       if (!response.success) {
         Future.error(ParseErrors.getDescription(response.error?.code ?? -1));
       }
     } catch (e) {
-      Future.error('Falha ao salvar o anúncio.');
+      Future.error('Falha ao salvar o anúncio. ${e.toString()}');
     }
   }
 
@@ -171,7 +175,14 @@ class AdRepository {
     try {
       if (images != null) {
         for (final image in images) {
-          if (image is File) {
+          if (image is String) {
+            final parseFile = ParseFile(
+              File(path.basename(image)),
+              name: path.basename(image),
+              url: image,
+            );
+            parseImages.add(parseFile);
+          } else if (image is File) {
             final parseFile = ParseFile(
               image,
               name: path.basename(image.path),
@@ -180,7 +191,7 @@ class AdRepository {
             final response = await parseFile.save();
             parseFile.set(
               'url',
-              '${dotenv.env['URL_FILES']!}${parseFile.name}',
+              '${dotenv.env['URL_FILES']}${parseFile.name}',
             );
 
             if (response.success) {
@@ -202,7 +213,7 @@ class AdRepository {
             'Não foi possível encontrar os arquivos das imagens.');
       }
     } catch (e) {
-      return Future.error('Falha ao salvar imagens.');
+      return Future.error('Falha ao salvar imagens. ${e.toString()}');
     }
   }
 

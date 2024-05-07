@@ -7,7 +7,7 @@ part 'postal_code.g.dart';
 class PostalCodeStore = PostalCodeStoreBase with _$PostalCodeStore;
 
 abstract class PostalCodeStoreBase with Store {
-  PostalCodeStoreBase() {
+  PostalCodeStoreBase({String? initialPostalCode}) {
     autorun(
       (p0) {
         if (clearPostalCode.length != 8) {
@@ -17,6 +17,8 @@ abstract class PostalCodeStoreBase with Store {
         }
       },
     );
+
+    setPostalCode(initialPostalCode ?? '');
   }
 
   @observable

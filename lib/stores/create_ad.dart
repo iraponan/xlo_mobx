@@ -1,3 +1,4 @@
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:xlo_mobx/models/ad.dart';
@@ -12,8 +13,27 @@ part 'create_ad.g.dart';
 class CreateAdStore = CreateAdStoreBase with _$CreateAdStore;
 
 abstract class CreateAdStoreBase with Store {
-  ObservableList images = ObservableList();
-  PostalCodeStore postalCodeStore = PostalCodeStore();
+  CreateAdStoreBase({required this.ad}) {
+    title = ad.title ?? '';
+    description = ad.description ?? '';
+    images = ad.images?.asObservable() ?? ObservableList();
+    category = ad.category;
+    priceText = UtilBrasilFields.obterReal(
+        double.tryParse(ad.price.toString()) ?? 0,
+        moeda: true);
+    hidePhone = ad.hidePhone ?? false;
+    if (ad.address != null) {
+      postalCodeStore =
+          PostalCodeStore(initialPostalCode: ad.address?.postalCode);
+    } else {
+      postalCodeStore = PostalCodeStore();
+    }
+  }
+
+  final Ad ad;
+
+  late ObservableList images;
+  late PostalCodeStore postalCodeStore;
 
   @computed
   bool get imagesValid => images.isNotEmpty;
@@ -84,7 +104,7 @@ abstract class CreateAdStoreBase with Store {
   bool hidePhone = false;
 
   @action
-  void setHidePhone(bool? value) => hidePhone = value!;
+  void setHidePhone(bool? value) => hidePhone = value ?? false;
 
   @computed
   bool get formValid =>
@@ -115,16 +135,14 @@ abstract class CreateAdStoreBase with Store {
 
   @action
   Future<void> _send() async {
-    final ad = Ad(
-      images: images,
-      title: title,
-      description: description,
-      category: category,
-      address: address,
-      price: price,
-      hidePhone: hidePhone,
-      user: GetIt.I<UserManagerStore>().user,
-    );
+    ad.images = images;
+    ad.title = title;
+    ad.description = description;
+    ad.category = category;
+    ad.address = address;
+    ad.price = price;
+    ad.hidePhone = hidePhone;
+    ad.user = GetIt.I<UserManagerStore>().user;
 
     loading = true;
     try {

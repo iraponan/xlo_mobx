@@ -20,6 +20,7 @@ class PostalCodeField extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextFormField(
+              initialValue: postalCodeStore.postalCode,
               onChanged: postalCodeStore.setPostalCode,
               keyboardType: TextInputType.number,
               inputFormatters: [

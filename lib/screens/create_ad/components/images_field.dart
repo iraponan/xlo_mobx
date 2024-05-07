@@ -86,8 +86,10 @@ class ImagesField extends StatelessWidget {
                         },
                         child: CircleAvatar(
                           radius: 44,
-                          backgroundImage:
-                              FileImage(createAdStore.images[index]),
+                          backgroundImage: createAdStore.images[index] is File
+                              ? FileImage(createAdStore.images[index])
+                              : NetworkImage(createAdStore.images[index])
+                                  as ImageProvider,
                         ),
                       ),
                     );
