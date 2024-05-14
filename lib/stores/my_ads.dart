@@ -37,6 +37,20 @@ abstract class MyAdsStoreBase with Store {
     }
   }
 
+  @action
+  Future<void> soldAd(Ad ad) async {
+    loading = true;
+    await AdRepository().sold(ad);
+    refresh();
+  }
+
+  @action
+  Future<void> deleteAd(Ad ad) async {
+    loading = true;
+    await AdRepository().delete(ad);
+    refresh();
+  }
+
   @observable
   bool loading = false;
 

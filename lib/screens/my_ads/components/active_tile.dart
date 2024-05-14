@@ -97,8 +97,10 @@ class ActiveTile extends StatelessWidget {
                         editAd(context);
                         break;
                       case 1:
+                        soldAd(context);
                         break;
                       case 2:
+                        deleteAd(context);
                         break;
                       default:
                         break;
@@ -143,6 +145,37 @@ class ActiveTile extends StatelessWidget {
     );
   }
 
+  void soldAd(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Vendido'),
+        content: Text('Confirmar a venda de ${ad.title}?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.purple,
+            ),
+            child: const Text('Não'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              myAdsStore.soldAd(ad);
+            },
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.red,
+            ),
+            child: const Text('Sim'),
+          ),
+        ],
+      ),
+    );
+  }
+
   Future<void> editAd(BuildContext context) async {
     final success = await Navigator.of(context).push(
       MaterialPageRoute(
@@ -152,5 +185,36 @@ class ActiveTile extends StatelessWidget {
     if (success != null && success) {
       myAdsStore.refresh();
     }
+  }
+
+  void deleteAd(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Excluir'),
+        content: Text('Confirmar a exclusão de ${ad.title}?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.purple,
+            ),
+            child: const Text('Não'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              myAdsStore.deleteAd(ad);
+            },
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.red,
+            ),
+            child: const Text('Sim'),
+          ),
+        ],
+      ),
+    );
   }
 }

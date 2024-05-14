@@ -79,6 +79,7 @@ class _MyAdsScreenState extends State<MyAdsScreen>
                           itemCount: myAdsStore.soldAds.length,
                           itemBuilder: (context, index) => SoldTile(
                             ad: myAdsStore.soldAds[index],
+                            myAdsStore: myAdsStore,
                           ),
                         ),
                 ],

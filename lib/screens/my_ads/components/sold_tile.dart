@@ -3,11 +3,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:xlo_mobx/models/ad.dart';
+import 'package:xlo_mobx/stores/my_ads.dart';
 
 class SoldTile extends StatelessWidget {
-  const SoldTile({super.key, required this.ad});
+  const SoldTile({super.key, required this.ad, required this.myAdsStore});
 
   final Ad ad;
+  final MyAdsStore myAdsStore;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +57,7 @@ class SoldTile extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () => deleteAd(context),
                 icon: const Icon(
                   Icons.delete,
                   color: Colors.red,
@@ -64,6 +66,37 @@ class SoldTile extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void deleteAd(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Excluir'),
+        content: Text('Confirmar a exclusão de ${ad.title}?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.purple,
+            ),
+            child: const Text('Não'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              myAdsStore.deleteAd(ad);
+            },
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.red,
+            ),
+            child: const Text('Sim'),
+          ),
+        ],
       ),
     );
   }
