@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:xlo_mobx/components/empty_card.dart';
 import 'package:xlo_mobx/screens/my_ads/components/active_tile.dart';
 import 'package:xlo_mobx/screens/my_ads/components/pending_tile.dart';
 import 'package:xlo_mobx/screens/my_ads/components/sold_tile.dart';
@@ -57,7 +58,9 @@ class _MyAdsScreenState extends State<MyAdsScreen>
                 controller: tabController,
                 children: [
                   myAdsStore.activeAds.isEmpty
-                      ? Container()
+                      ? const EmptyCard(
+                          text: 'Você não possui nenhum anúncio ativo.',
+                        )
                       : ListView.builder(
                           itemCount: myAdsStore.activeAds.length,
                           itemBuilder: (context, index) => ActiveTile(
@@ -66,7 +69,9 @@ class _MyAdsScreenState extends State<MyAdsScreen>
                           ),
                         ),
                   myAdsStore.pendingAds.isEmpty
-                      ? Container()
+                      ? const EmptyCard(
+                          text: 'Você não possui nenhum anúncio pendente.',
+                        )
                       : ListView.builder(
                           itemCount: myAdsStore.pendingAds.length,
                           itemBuilder: (context, index) => PendingTile(
@@ -74,7 +79,9 @@ class _MyAdsScreenState extends State<MyAdsScreen>
                           ),
                         ),
                   myAdsStore.soldAds.isEmpty
-                      ? Container()
+                      ? const EmptyCard(
+                          text: 'Você não possui nenhum anúncio vendido.',
+                        )
                       : ListView.builder(
                           itemCount: myAdsStore.soldAds.length,
                           itemBuilder: (context, index) => SoldTile(
