@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:xlo_mobx/components/drawer/custom_drawer.dart';
+import 'package:xlo_mobx/screens/edit_account/edit_account_screen.dart';
 import 'package:xlo_mobx/screens/my_ads/my_ads_screen.dart';
 import 'package:xlo_mobx/stores/user_manager.dart';
 
@@ -51,7 +52,11 @@ class AccountScreen extends StatelessWidget {
                     Align(
                       alignment: Alignment.topRight,
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const EditAccountScreen(),
+                          ),
+                        ),
                         style: TextButton.styleFrom(
                             foregroundColor: Colors.purple),
                         child: const Text('Editar'),
