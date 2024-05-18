@@ -2,9 +2,11 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:xlo_mobx/components/error_box.dart';
 import 'package:xlo_mobx/stores/edit_account.dart';
+import 'package:xlo_mobx/stores/page.dart';
 
 class EditAccountScreen extends StatelessWidget {
   const EditAccountScreen({super.key});
@@ -123,7 +125,11 @@ class EditAccountScreen extends StatelessWidget {
                             : const Text('Salvar'),
                       ),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          editAccountStore.logout();
+                          GetIt.I<PageStore>().setPage(0);
+                          Navigator.of(context).pop();
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red,
                         ),
