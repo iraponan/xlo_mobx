@@ -30,41 +30,47 @@ class EditAccountScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       LayoutBuilder(
-                        builder: (context, constraints) => ToggleSwitch(
-                          cornerRadius: 20,
-                          minWidth: constraints.biggest.width / 2,
-                          labels: const ['Particular', 'Profissional'],
-                          activeBgColor: const [Colors.purple],
-                          inactiveBgColor: Colors.grey,
-                          activeFgColor: Colors.white,
-                          inactiveFgColor: Colors.white,
-                          initialLabelIndex: 0,
-                          onToggle: editAccountStore.setUserType,
+                        builder: (context, constraints) => IgnorePointer(
+                          ignoring: editAccountStore.loading,
+                          child: ToggleSwitch(
+                            cornerRadius: 20,
+                            minWidth: constraints.biggest.width / 2,
+                            labels: const ['Particular', 'Profissional'],
+                            activeBgColor: const [Colors.purple],
+                            inactiveBgColor: Colors.grey,
+                            activeFgColor: Colors.white,
+                            inactiveFgColor: Colors.white,
+                            initialLabelIndex: editAccountStore.userType?.index,
+                            onToggle: editAccountStore.setUserType,
+                          ),
                         ),
                       ),
                       const SizedBox(
                         height: 16,
                       ),
                       TextFormField(
+                        enabled: !editAccountStore.loading,
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(),
                           isDense: true,
                           labelText: 'Nome *',
                           errorText: editAccountStore.nameError,
                         ),
-                        initialValue: '',
+                        initialValue: editAccountStore.name,
                         onChanged: editAccountStore.setName,
                       ),
                       const SizedBox(
                         height: 8,
                       ),
                       TextFormField(
+                        enabled: !editAccountStore.loading,
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(),
                           isDense: true,
                           labelText: 'Telefone *',
                           errorText: editAccountStore.phoneError,
                         ),
+                        initialValue: editAccountStore.phone,
                         onChanged: editAccountStore.setPhone,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly,
@@ -76,6 +82,7 @@ class EditAccountScreen extends StatelessWidget {
                         height: 8,
                       ),
                       TextFormField(
+                        enabled: !editAccountStore.loading,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           isDense: true,
@@ -88,6 +95,7 @@ class EditAccountScreen extends StatelessWidget {
                         height: 8,
                       ),
                       TextFormField(
+                        enabled: !editAccountStore.loading,
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(),
                           isDense: true,
@@ -101,8 +109,10 @@ class EditAccountScreen extends StatelessWidget {
                         height: 12,
                       ),
                       ElevatedButton(
-                        onPressed: editAccountStore.isFormeValid ? () {} : null,
-                        child: const Text('Salvar'),
+                        onPressed: editAccountStore.savePressed,
+                        child: editAccountStore.loading
+                            ? const CircularProgressIndicator()
+                            : const Text('Salvar'),
                       ),
                       ElevatedButton(
                         onPressed: () {},

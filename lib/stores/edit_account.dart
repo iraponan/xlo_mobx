@@ -1,11 +1,25 @@
+import 'dart:ui';
+
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:xlo_mobx/helpers/enums/user_type.dart';
+import 'package:xlo_mobx/stores/user_manager.dart';
 
 part 'edit_account.g.dart';
 
 class EditAccountStore = EditAccountStoreBase with _$EditAccountStore;
 
 abstract class EditAccountStoreBase with Store {
+  EditAccountStoreBase() {
+    final user = userManagerStore.user;
+
+    userType = user?.type;
+    name = user?.name;
+    phone = user?.phone;
+  }
+
+  final UserManagerStore userManagerStore = GetIt.I<UserManagerStore>();
+
   @observable
   UserType? userType;
 
@@ -56,4 +70,19 @@ abstract class EditAccountStoreBase with Store {
 
   @computed
   bool get isFormeValid => nameValid && phoneValid && passValid;
+
+  @observable
+  bool loading = false;
+
+  @computed
+  VoidCallback? get savePressed => isFormeValid && !loading ? _save : null;
+
+  @action
+  Future<void> _save() async {
+    loading = true;
+
+    await Future.delayed(const Duration(seconds: 3));
+
+    loading = false;
+  }
 }
