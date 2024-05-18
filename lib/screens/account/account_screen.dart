@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:xlo_mobx/components/drawer/custom_drawer.dart';
 import 'package:xlo_mobx/screens/edit_account/edit_account_screen.dart';
 import 'package:xlo_mobx/screens/my_ads/my_ads_screen.dart';
 import 'package:xlo_mobx/stores/user_manager.dart';
 
-class AccountScreen extends StatelessWidget {
+class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
 
   @override
+  State<AccountScreen> createState() => _AccountScreenState();
+}
+
+class _AccountScreenState extends State<AccountScreen> {
+  @override
   Widget build(BuildContext context) {
+    final UserManagerStore userManagerStore = GetIt.I<UserManagerStore>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Minha Conta'),
@@ -31,16 +39,20 @@ class AccountScreen extends StatelessWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
-                            GetIt.I<UserManagerStore>().user?.name ?? '',
-                            style: const TextStyle(
-                              fontSize: 20,
-                              color: Colors.purple,
-                              fontWeight: FontWeight.w900,
-                            ),
+                          Observer(
+                            builder: (context) {
+                              return Text(
+                                userManagerStore.user!.name,
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.purple,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              );
+                            },
                           ),
                           Text(
-                            GetIt.I<UserManagerStore>().user?.email ?? '',
+                            userManagerStore.user?.email ?? '',
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.grey[700],
@@ -52,11 +64,15 @@ class AccountScreen extends StatelessWidget {
                     Align(
                       alignment: Alignment.topRight,
                       child: TextButton(
-                        onPressed: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const EditAccountScreen(),
-                          ),
-                        ),
+                        onPressed: () => Navigator.of(context)
+                            .push(
+                              MaterialPageRoute(
+                                builder: (context) => const EditAccountScreen(),
+                              ),
+                            )
+                            .then(
+                              (value) => setState(() {}),
+                            ),
                         style: TextButton.styleFrom(
                             foregroundColor: Colors.purple),
                         child: const Text('Editar'),

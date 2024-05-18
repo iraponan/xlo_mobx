@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+import 'package:xlo_mobx/components/error_box.dart';
 import 'package:xlo_mobx/stores/edit_account.dart';
 
 class EditAccountScreen extends StatelessWidget {
@@ -29,6 +30,12 @@ class EditAccountScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: ErrorBox(
+                          message: editAccountStore.error,
+                        ),
+                      ),
                       LayoutBuilder(
                         builder: (context, constraints) => IgnorePointer(
                           ignoring: editAccountStore.loading,
@@ -58,6 +65,7 @@ class EditAccountScreen extends StatelessWidget {
                         ),
                         initialValue: editAccountStore.name,
                         onChanged: editAccountStore.setName,
+                        textCapitalization: TextCapitalization.words,
                       ),
                       const SizedBox(
                         height: 8,
