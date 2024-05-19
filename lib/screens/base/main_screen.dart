@@ -5,6 +5,8 @@ import 'package:xlo_mobx/screens/account/account_screen.dart';
 import 'package:xlo_mobx/screens/create_ad/create_ad_screen.dart';
 import 'package:xlo_mobx/screens/favorite/favorite_screen.dart';
 import 'package:xlo_mobx/screens/home/home_screen.dart';
+import 'package:xlo_mobx/screens/offline/offline_screen.dart';
+import 'package:xlo_mobx/stores/connectivity.dart';
 import 'package:xlo_mobx/stores/page.dart';
 
 class MainScreen extends StatefulWidget {
@@ -17,6 +19,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   final PageController pageController = PageController();
   final PageStore pageStore = GetIt.I<PageStore>();
+  final ConnectivityStore connectivityStore = GetIt.I<ConnectivityStore>();
 
   @override
   void initState() {
@@ -25,6 +28,14 @@ class _MainScreenState extends State<MainScreen> {
       (_) => pageStore.page,
       (page) => pageController.jumpToPage(page),
     );
+
+    autorun((_) {
+      if (!connectivityStore.connected) {
+        Future.delayed(const Duration(seconds: 1)).then((v) {
+          showDialog(context: context, builder: (_) => const OfflineScreen());
+        });
+      }
+    });
   }
 
   @override

@@ -23,65 +23,69 @@ class AdRepository {
     Category? category,
     int? page,
   }) async {
-    await UserRepository().currentUser();
-    final queryBuilder = QueryBuilder<ParseObject>(ParseObject(keyAdTable))
-      ..includeObject([keyAdOwner, keyAdCategory])
-      ..setAmountToSkip((page ?? 0) * 10)
-      ..setLimit(10)
-      ..whereEqualTo(keyAdStatus, AdStatus.active.index);
+    try {
+      await UserRepository().currentUser();
+      final queryBuilder = QueryBuilder<ParseObject>(ParseObject(keyAdTable))
+        ..includeObject([keyAdOwner, keyAdCategory])
+        ..setAmountToSkip((page ?? 0) * 10)
+        ..setLimit(10)
+        ..whereEqualTo(keyAdStatus, AdStatus.active.index);
 
-    if (search != null && search.trim().isNotEmpty) {
-      queryBuilder.whereContains(keyAdTitle, search, caseSensitive: false);
-    }
-    if (category != null && category.id != '*') {
-      queryBuilder.whereEqualTo(
-          keyAdCategory,
-          (ParseObject(keyCategoryTable)..set(keyCategoryId, category.id))
-              .toPointer());
-    }
-    switch (filter?.orderBy) {
-      case OrderBy.price:
-        queryBuilder.orderByAscending(keyAdPrice);
-        break;
-      case OrderBy.date:
-      case null:
-      default:
-        queryBuilder.orderByDescending(keyAdCreatedAt);
-        break;
-    }
-
-    if (filter?.minPrice != null && (filter!.minPrice ?? 0) > 0) {
-      queryBuilder.whereGreaterThanOrEqualsTo(keyAdPrice, filter.minPrice);
-    }
-    if (filter?.maxPrice != null && (filter!.maxPrice ?? 0) > 0) {
-      queryBuilder.whereLessThanOrEqualTo(keyAdPrice, filter.maxPrice);
-    }
-
-    if (filter?.vendoType != null &&
-        filter!.vendoType > 0 &&
-        filter.vendoType < (vendorTypeProfessional | vendorTypeParticular)) {
-      final userQuery = QueryBuilder<ParseUser>(ParseUser.forQuery());
-
-      if (filter.vendoType == vendorTypeParticular) {
-        userQuery.whereEqualTo(keyUserType, UserType.particular.index);
+      if (search != null && search.trim().isNotEmpty) {
+        queryBuilder.whereContains(keyAdTitle, search, caseSensitive: false);
+      }
+      if (category != null && category.id != '*') {
+        queryBuilder.whereEqualTo(
+            keyAdCategory,
+            (ParseObject(keyCategoryTable)..set(keyCategoryId, category.id))
+                .toPointer());
+      }
+      switch (filter?.orderBy) {
+        case OrderBy.price:
+          queryBuilder.orderByAscending(keyAdPrice);
+          break;
+        case OrderBy.date:
+        case null:
+        default:
+          queryBuilder.orderByDescending(keyAdCreatedAt);
+          break;
       }
 
-      if (filter.vendoType == vendorTypeProfessional) {
-        userQuery.whereEqualTo(keyUserType, UserType.professional.index);
+      if (filter?.minPrice != null && (filter!.minPrice ?? 0) > 0) {
+        queryBuilder.whereGreaterThanOrEqualsTo(keyAdPrice, filter.minPrice);
+      }
+      if (filter?.maxPrice != null && (filter!.maxPrice ?? 0) > 0) {
+        queryBuilder.whereLessThanOrEqualTo(keyAdPrice, filter.maxPrice);
       }
 
-      queryBuilder.whereMatchesQuery(keyAdOwner, userQuery);
-    }
+      if (filter?.vendoType != null &&
+          filter!.vendoType > 0 &&
+          filter.vendoType < (vendorTypeProfessional | vendorTypeParticular)) {
+        final userQuery = QueryBuilder<ParseUser>(ParseUser.forQuery());
 
-    final response = await queryBuilder.query();
+        if (filter.vendoType == vendorTypeParticular) {
+          userQuery.whereEqualTo(keyUserType, UserType.particular.index);
+        }
 
-    if (response.success && response.results != null) {
-      return response.results!.map((r) => Ad.fromParse(r)).toList();
-    } else if (response.success && response.results == null) {
-      return [];
-    } else {
-      return Future.error(
-          ParseErrors.getDescription(response.error?.code ?? -1));
+        if (filter.vendoType == vendorTypeProfessional) {
+          userQuery.whereEqualTo(keyUserType, UserType.professional.index);
+        }
+
+        queryBuilder.whereMatchesQuery(keyAdOwner, userQuery);
+      }
+
+      final response = await queryBuilder.query();
+
+      if (response.success && response.results != null) {
+        return response.results!.map((r) => Ad.fromParse(r)).toList();
+      } else if (response.success && response.results == null) {
+        return [];
+      } else {
+        return Future.error(
+            ParseErrors.getDescription(response.error?.code ?? -1));
+      }
+    } catch (e) {
+      return Future.error('Falha de conexão.');
     }
   }
 
