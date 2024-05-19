@@ -35,7 +35,10 @@ class AdScreen extends StatelessWidget {
               ad.status == AdStatus.active && userManagerStore.isLoggedIn
                   ? IconButton(
                       onPressed: () => favoriteStore.toggleFavorite(ad),
-                      icon: const Icon(Icons.favorite_border),
+                      icon: Icon(
+                          favoriteStore.favoriteList.any((a) => a.id == ad.id)
+                              ? Icons.favorite
+                              : Icons.favorite_border),
                     )
                   : Container(),
             ],

@@ -11,12 +11,21 @@ class FavoriteStore = FavoriteStoreBase with _$FavoriteStore;
 abstract class FavoriteStoreBase with Store {
   final UserManagerStore userManagerStore = GetIt.I<UserManagerStore>();
 
+  ObservableList<Ad> favoriteList = ObservableList<Ad>();
+
   @observable
   String error = '';
 
+  @action
   Future<void> toggleFavorite(Ad ad) async {
     try {
-      await FavoriteRepository().save(ad: ad, user: userManagerStore.user!);
+      if (favoriteList.any((a) => a.id == ad.id)) {
+        favoriteList.removeWhere((a) => a.id == ad.id);
+        await FavoriteRepository().delete(ad: ad, user: userManagerStore.user!);
+      } else {
+        favoriteList.add(ad);
+        await FavoriteRepository().save(ad: ad, user: userManagerStore.user!);
+      }
     } catch (e) {
       error = e.toString();
     }

@@ -25,4 +25,39 @@ class FavoriteRepository {
       );
     }
   }
+
+  Future<void> delete({required Ad ad, required User user}) async {
+    try {
+      final queryBuilder =
+          QueryBuilder<ParseObject>(ParseObject(keyFavoritesTable))
+            ..whereEqualTo(
+              keyFavoritesOwner,
+              user.id,
+            )
+            ..whereEqualTo(
+              keyFavoritesAd,
+              ParseObject(keyAdTable)
+                ..set(
+                  keyAdId,
+                  ad.id,
+                ),
+            );
+
+      final response = await queryBuilder.query();
+
+      if (response.success && response.results != null) {
+        for (final f in response.results as List<ParseObject>) {
+          await f.delete();
+        }
+      }
+
+      if (!response.success) {
+        return Future.error(
+          ParseErrors.getDescription(response.error?.code ?? -1),
+        );
+      }
+    } catch (e) {
+      Future.error('Falha ao deletar favorito!');
+    }
+  }
 }
