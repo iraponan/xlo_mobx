@@ -1,16 +1,20 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:xlo_mobx/models/ad.dart';
 import 'package:xlo_mobx/screens/ad/ad_screen.dart';
+import 'package:xlo_mobx/stores/favorite.dart';
 
-class AdTile extends StatelessWidget {
-  const AdTile({super.key, required this.ad});
+class FavoriteTile extends StatelessWidget {
+  const FavoriteTile({super.key, required this.ad});
 
   final Ad ad;
 
   @override
   Widget build(BuildContext context) {
+    final FavoriteStore favoriteStore = GetIt.I<FavoriteStore>();
+
     return GestureDetector(
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute(
@@ -56,10 +60,24 @@ class AdTile extends StatelessWidget {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      Text(
-                          '${UtilData.obterDataDDMMAAAA(ad.createdAt ?? DateTime.now())} '
-                          '${UtilData.obterHoraHHMM(ad.createdAt ?? DateTime.now())}\n'
-                          '${ad.address?.city.name}/${ad.address?.federativeUnit.initials}'),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                                '${UtilData.obterDataDDMMAAAA(ad.createdAt ?? DateTime.now())} '
+                                '${UtilData.obterHoraHHMM(ad.createdAt ?? DateTime.now())}\n'
+                                '${ad.address?.city.name}/${ad.address?.federativeUnit.initials}'),
+                          ),
+                          GestureDetector(
+                            onTap: () => favoriteStore.toggleFavorite(ad),
+                            child: const Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                              size: 30,
+                            ),
+                          )
+                        ],
+                      ),
                     ],
                   ),
                 ),
