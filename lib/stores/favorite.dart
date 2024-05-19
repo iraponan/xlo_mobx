@@ -9,9 +9,29 @@ part 'favorite.g.dart';
 class FavoriteStore = FavoriteStoreBase with _$FavoriteStore;
 
 abstract class FavoriteStoreBase with Store {
+  FavoriteStoreBase() {
+    reaction(
+      (_) => userManagerStore.isLoggedIn,
+      (_) => _getFavoriteList(),
+    );
+  }
+
   final UserManagerStore userManagerStore = GetIt.I<UserManagerStore>();
 
   ObservableList<Ad> favoriteList = ObservableList<Ad>();
+
+  @action
+  Future<void> _getFavoriteList() async {
+    //try {
+    favoriteList.clear();
+    final favorites =
+        await FavoriteRepository().getFavorites(user: userManagerStore.user!);
+    favoriteList.addAll(favorites);
+    /*} catch (e) {
+      error = e.toString();
+      print('Erro: $error');
+    }*/
+  }
 
   @observable
   String error = '';

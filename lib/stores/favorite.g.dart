@@ -25,6 +25,22 @@ mixin _$FavoriteStore on FavoriteStoreBase, Store {
     });
   }
 
+  late final _$_getFavoriteListAsyncAction =
+      AsyncAction('FavoriteStoreBase._getFavoriteList', context: context);
+
+  @override
+  Future<void> _getFavoriteList() {
+    return _$_getFavoriteListAsyncAction.run(() => super._getFavoriteList());
+  }
+
+  late final _$toggleFavoriteAsyncAction =
+      AsyncAction('FavoriteStoreBase.toggleFavorite', context: context);
+
+  @override
+  Future<void> toggleFavorite(Ad ad) {
+    return _$toggleFavoriteAsyncAction.run(() => super.toggleFavorite(ad));
+  }
+
   @override
   String toString() {
     return '''

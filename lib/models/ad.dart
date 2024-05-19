@@ -32,9 +32,9 @@ class Ad {
     category = Category.fromParse(object.get<ParseObject>(keyAdCategory)!);
     address = Address(
       federativeUnit: FederativeUnit(
-        initials: object.get<String>(keyAdFederativeUnit),
+        initials: object.get<String>(keyAdFederativeUnit) ?? '',
       ),
-      city: City(name: object.get<String>(keyAdCity)),
+      city: City(name: object.get<String>(keyAdCity) ?? ''),
       postalCode: object.get<String>(keyAdPostalCode) ?? '',
       district: object.get<String>(keyAdDistrict) ?? '',
       street: object.get<String>(keyAdStreet) ?? '',

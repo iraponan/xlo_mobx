@@ -6,7 +6,7 @@ class Category {
 
   Category.fromParse(ParseObject parseObject)
       : id = parseObject.objectId ?? '*',
-        description = parseObject.get(keyCategoryDescription);
+        description = parseObject.get(keyCategoryDescription) ?? '';
 
   final String id;
   final String description;

@@ -6,6 +6,31 @@ import 'package:xlo_mobx/repositories/keys/ad.dart';
 import 'package:xlo_mobx/repositories/keys/favorite.dart';
 
 class FavoriteRepository {
+  Future<List<Ad>> getFavorites({required User user}) async {
+    final queryBuilder =
+        QueryBuilder<ParseObject>(ParseObject(keyFavoritesTable))
+          ..whereEqualTo(
+            keyFavoritesOwner,
+            user.id,
+          )
+          ..includeObject([keyFavoritesAd, 'ad.owner']);
+
+    final response = await queryBuilder.query();
+
+    if (response.success && response.results != null) {
+      final lista = response.results!
+          .map((po) => Ad.fromParse(po.get(keyFavoritesAd)))
+          .toList();
+      return lista;
+    } else if (response.success) {
+      return [];
+    } else {
+      return Future.error(
+        ParseErrors.getDescription(response.error?.code ?? -1),
+      );
+    }
+  }
+
   Future<void> save({required Ad ad, required User user}) async {
     final favoriteObject = ParseObject(keyFavoritesTable)
       ..set<String>(
