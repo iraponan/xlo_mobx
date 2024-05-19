@@ -10,6 +10,7 @@ abstract class Initialize {
     await Parse().initialize(
       dotenv.env['APP_NAME'] ?? '',
       dotenv.env['SERVER_URL'] ?? '',
+      appName: dotenv.env['APP_NAME'] ?? '',
       masterKey: dotenv.env['MASTER_KEY'] ?? '',
       autoSendSessionId: true,
       debug: true,
